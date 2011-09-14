@@ -8,14 +8,15 @@
                 <div id="header">
                     <?
                     include('config.php');
-                    if (isset($_GET['imovel_id']) == FALSE) {
+                    if (isset($_GET['imovel_id']) == FALSE)
                         exit;
-                    }
                     $imovel_id = (int) $_GET['imovel_id'];
                     $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
                     $row = mysql_fetch_row($result);
                     $endereco = $row[0];
-                    echo '<h2>' . $endereco . '</h2>';
+                        echo "";
+
+                    echo '<strong>' . $endereco . "</strong> | <a href='list.php?imovel_id=$imovel_id'>Voltar</a>";
                     if (isset($_POST['submitted'])) {
                         foreach ($_POST AS $key => $value) {
                             $_POST[$key] = mysql_real_escape_string($value);
@@ -34,10 +35,10 @@
                         echo "<p><b>Digito Cc:</b><br /><input type='text' name='digito_cc'/>";
                         echo "<p><b>Banco:</b><br /><input type='text' name='banco'/>";
                         echo "<p><b>Agencia:</b><br /><input type='text' name='agencia'/>";
-                        echo "<p><b>Cedente Codigo:</b><br /><input type='text' name='cedente_codigo'/>";
-                        echo "<p><b>Cedente Nome:</b><br /><input type='text' name='cedente_nome' size=60/>";
                         echo "<p><b>Carteira:</b><br /><input type='text' name='carteira'/>";
                         echo "<p><b>Nosso Num:</b><br /><input type='text' name='nosso_num' disabled='disabled'/>";
+                        echo "<p><b>Cedente Codigo:</b><br /><input type='text' name='cedente_codigo'/>";
+                        echo "<p><b>Cedente Nome:</b><br /><input type='text' name='cedente_nome' size=60/>";
                         echo "<p><b>Sacado:</b><br /><input type='text' name='sacado' size=60/>";
                         ?>
                     </div>
@@ -62,8 +63,6 @@
                         echo "<p><b>Valor Pago:</b><br /><input type='text' name='valor_pago'/>";
                         echo "<p><input type='submit' value='Add Row' /><input type='hidden' value='1' name='submitted' />";
                         echo "<br /><br />";
-                        $imovel_id = (int) $_GET['imovel_id'];
-                        echo "<a href='list.php?imovel_id=$imovel_id'>Voltar para Lista</a>";
                         ?>
                     </div>
                 </div>

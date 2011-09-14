@@ -21,6 +21,5 @@ while ($row = mysql_fetch_array($result)) {
     echo "</tr>";
 }
 echo "</table>";
-echo "<br />";
 echo "<a href=new.php>Novo cadastro</a>";
 ?>

@@ -5,8 +5,7 @@ if (isset($_GET['imovel_id'])) {
     $imovel_id = (int) $_GET['imovel_id'];
     $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
     $endereco = mysql_result($result, 0);
-    echo $endereco . '<br/>';
-    echo "<a href=/locacao/imoveis/list.php>Ver imoveis</a>";
+    echo '<strong>'.$endereco . '</strong> | <a href=/locacao/imoveis/list.php>Voltar</a><br /><br />';
     echo "<table border=1 >";
     echo "<tr>";
     echo "<td><b>Vencimento</b></td>";
