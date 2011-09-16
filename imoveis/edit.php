@@ -16,10 +16,13 @@ if (isset($_GET['id'])) {
     <form action='' method='POST'>
         <p><b>Endereco:</b><br /><input type='text' name='endereco' size=80 value='<?= stripslashes($row['endereco']) ?>' />
         <p><b>Alugado:</b><br />
-            <input type='radio' name='alugado' value='1'<? if (isset($row['alugado']) && $row['alugado'] == 1) {
+            <input type='radio' name='alugado' value='1'<?
+    if (isset($row['alugado']) && $row['alugado'] == 1) {
         echo 'checked';
-    } ?>>Sim
-            <input type='radio' name='alugado' value='0'<? if (isset($row['alugado']) && $row['alugado'] == 0) {
+    }
+?>>Sim
+        <input type='radio' name='alugado' value='0'<?
+    if (isset($row['alugado']) && $row['alugado'] == 0) {
         echo 'checked';
     } ?>>Nao
         <p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' />

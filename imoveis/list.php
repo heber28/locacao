@@ -6,7 +6,7 @@ echo "<tr>";
 echo "<td><b>Endereco</b></td>";
 echo "<td><b>Alugado</b></td>";
 echo "</tr>";
-$result = mysql_query("SELECT * FROM `imoveis`") or trigger_error(mysql_error());
+$result = mysql_query("SELECT * FROM imoveis order by endereco") or trigger_error(mysql_error());
 while ($row = mysql_fetch_array($result)) {
     foreach ($row AS $key => $value) {
         $row[$key] = stripslashes($value);

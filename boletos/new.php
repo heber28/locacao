@@ -1,74 +1,134 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="new.css">
+    <head>        
     </head>
     <body>
-        <form action='' method='POST'>
-            <div id="wrapper">
-                <div id="header">
-                    <?
-                    include('config.php');
-                    if (isset($_GET['imovel_id']) == FALSE)
-                        exit;
-                    $imovel_id = (int) $_GET['imovel_id'];
-                    $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
-                    $row = mysql_fetch_row($result);
-                    $endereco = $row[0];
-                        echo "";
+        <?
+        echo "<form action='' method='POST'>";
+        include('config.php');
+        if (isset($_GET['imovel_id']) == FALSE)
+            exit;
+        $imovel_id = (int) $_GET['imovel_id'];
+        $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
+        $row = mysql_fetch_row($result);
+        $endereco = $row[0];
 
-                    echo '<strong>' . $endereco . "</strong> | <a href='list.php?imovel_id=$imovel_id'>Voltar</a>";
-                    if (isset($_POST['submitted'])) {
-                        foreach ($_POST AS $key => $value) {
-                            $_POST[$key] = mysql_real_escape_string($value);
-                        }
-                        $sql = "INSERT INTO `boletos` ( `imovel_id` ,  `imovel_endereco` ,  `ccorrente` ,  `digito_cc` ,  `banco` ,  `agencia` ,  `cedente_codigo` ,  `cedente_nome` ,  `carteira` ,  `nosso_num` ,  `vencimento` ,  `num_doc` ,  `data_doc` ,  `sacado` ,  `aluguel` ,  `iptu` ,  `sanepar` ,  `limpeza` ,  `material` ,  `copel` ,  `outros` ,  `pago` ,  `data_pagto` ,  `desconto` ,  `valor_pago`  ) VALUES(  '{$_GET['imovel_id']}' ,  '{$_POST['imovel_endereco']}' ,  '{$_POST['ccorrente']}' ,  '{$_POST['digito_cc']}' ,  '{$_POST['banco']}' ,  '{$_POST['agencia']}' ,  '{$_POST['cedente_codigo']}' ,  '{$_POST['cedente_nome']}' ,  '{$_POST['carteira']}' ,  '{$_POST['nosso_num']}' ,  '{$_POST['vencimento']}' ,  '{$_POST['num_doc']}' ,  '{$_POST['data_doc']}' ,  '{$_POST['sacado']}' ,  '{$_POST['aluguel']}' ,  '{$_POST['iptu']}' ,  '{$_POST['sanepar']}' ,  '{$_POST['limpeza']}' ,  '{$_POST['material']}' ,  '{$_POST['copel']}' ,  '{$_POST['outros']}' ,  '{$_POST['pago']}' ,  '{$_POST['data_pagto']}' ,  '{$_POST['desconto']}' ,  '{$_POST['valor_pago']}'  ) ";
-                        mysql_query($sql) or die(mysql_error());
-                        echo "Added row.<br />";
-                        echo "<a href='list.php'>Back To Listing</a>";
+        echo "";
+        echo '<strong>' . $endereco . "</strong> | <a href='list.php?imovel_id=$imovel_id'>Voltar</a>";
+        if (isset($_POST['submitted'])) {
+            foreach ($_POST AS $key => $value) {
+                $_POST[$key] = mysql_real_escape_string($value);
+            }
+            $sql = "INSERT INTO `boletos` ( `imovel_id` ,  `imovel_endereco` ,  `ccorrente` ,  `digito_cc` ,  `banco` ,  `agencia` ,  `cedente_codigo` ,  `cedente_nome` ,  `carteira` ,  `nosso_num` ,  `vencimento` ,  `num_doc` ,  `sacado` ,  `aluguel` ,  `iptu` ,  `sanepar` ,  `limpeza` ,  `material` ,  `copel` ,  `outros` ,  `desconto` ) VALUES(  '{$_GET['imovel_id']}' , '$endereco' ,  '{$_POST['ccorrente']}' ,  '{$_POST['digito_cc']}' ,  '{$_POST['banco']}' ,  '{$_POST['agencia']}' ,  '{$_POST['cedente_codigo']}' ,  '{$_POST['cedente_nome']}' ,  '{$_POST['carteira']}' ,  '{$_POST['nosso_num']}' ,  '{$_POST['vencimento']}' ,  '{$_POST['num_doc']}' ,  '{$_POST['sacado']}' ,  '{$_POST['aluguel']}' ,  '{$_POST['iptu']}' ,  '{$_POST['sanepar']}' ,  '{$_POST['limpeza']}' ,  '{$_POST['material']}' ,  '{$_POST['copel']}' ,  '{$_POST['outros']}' ,  '{$_POST['desconto']}'  ) ";
+            mysql_query($sql) or die(mysql_error());
+            echo "<br />";
+            echo "Cadastro salvo.<br />";
+        } else {
+            $sql = "select * from boletos where imovel_id = '$imovel_id' and id = (select max(id) from boletos where imovel_id = '$imovel_id')";
+            $result = mysql_query($sql) or die(mysql_error());
+
+            if (mysql_num_rows($result) == 0) {
+                echo "<br /><br />";
+                echo "<table>";
+                echo "<tr><td>Ccorrente</td>";
+                echo"<td><input type='text' name='ccorrente'></td></tr>";
+                echo "<tr><td>Digito CC</td>";
+                echo"<td><input type='text' name='digito_cc'></td></tr>";
+                echo "<tr><td>Banco</td>";
+                echo"<td><input type='text' name='banco'></td></tr>";
+                echo "<tr><td>Agencia</td>";
+                echo"<td><input type='text' name='agencia'></td></tr>";
+                echo "<tr><td>Carteira</td>";
+                echo"<td><input type='text' name='carteira'></td></tr>";
+                echo "<tr><td>Nosso Num</td>";
+                $nosso_num = date('ym', time()) . substr(sprintf("%03d", $imovel_id), 0, 3) . sprintf("%02d", rand(0, 99));
+                echo"<td><input type='text' name='nosso_num' value=" . $nosso_num . "></td></tr>";
+                echo "<tr><td>Cedente Codigo</td>";
+                echo"<td><input type='text' name='cedente_codigo'></td></tr>";
+                echo "<tr><td>Cedente Nome</td>";
+                echo"<td><input type='text' name='cedente_nome' size=60></td></tr>";
+                echo "<tr><td>Sacado</td>";
+                echo"<td><input type='text' name='sacado' size=60></td></tr>";
+                echo "<tr><td>Vencimento</td>";
+                $data = strtotime('+1 month');
+                echo"<td><input type='text' name='vencimento' value=" . strftime('%Y-%m-%d', $data) . "></td></tr>";
+                echo "<tr><td>Num Doc</td>";
+                echo"<td><input type='text' name='num_doc' value='01/12'></td></tr>";
+                echo "<tr><td>Aluguel</td>";
+                echo"<td><input type='text' name='aluguel' value=0></td></tr>";
+                echo "<tr><td>Copel</td>";
+                echo"<td><input type='text' name='copel' value=0></td></tr>";
+                echo "<tr><td>Sanepar</td>";
+                echo"<td><input type='text' name='sanepar' value=0></td></tr>";
+                echo "<tr><td>Material</td>";
+                echo"<td><input type='text' name='material' value=0></td></tr>";
+                echo "<tr><td>Iptu</td>";
+                echo"<td><input type='text' name='iptu' value=0></td></tr>";
+                echo "<tr><td>Limpeza</td>";
+                echo"<td><input type='text' name='limpeza' value=0></td></tr>";
+                echo "<tr><td>Outros</td>";
+                echo"<td><input type='text' name='outros' value=0></td></tr>";
+                echo "<tr><td>Desconto</td><td><input type='text' name='desconto' value=0></td></tr>";
+                echo "</table>";
+                echo "<input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' /><br />";
+            } else {
+                while ($row = mysql_fetch_array($result)) {
+                    foreach ($row AS $key => $value) {
+                        $row[$key] = stripslashes($value);
                     }
-                    ?>
-                </div>
-                <div id="container">
-                    <div id="side-a">
-                        <?
-                        echo "<p><b>Ccorrente:</b><br /><input type='text' name='ccorrente'/>";
-                        echo "<p><b>Digito Cc:</b><br /><input type='text' name='digito_cc'/>";
-                        echo "<p><b>Banco:</b><br /><input type='text' name='banco'/>";
-                        echo "<p><b>Agencia:</b><br /><input type='text' name='agencia'/>";
-                        echo "<p><b>Carteira:</b><br /><input type='text' name='carteira'/>";
-                        echo "<p><b>Nosso Num:</b><br /><input type='text' name='nosso_num' disabled='disabled'/>";
-                        echo "<p><b>Cedente Codigo:</b><br /><input type='text' name='cedente_codigo'/>";
-                        echo "<p><b>Cedente Nome:</b><br /><input type='text' name='cedente_nome' size=60/>";
-                        echo "<p><b>Sacado:</b><br /><input type='text' name='sacado' size=60/>";
-                        ?>
-                    </div>
-                    <div id="content">
-                        <?
-                        echo "<p><b>Vencimento:</b><br /><input type='text' name='vencimento'/>";
-                        echo "<p><b>Num Doc:</b><br /><input type='text' name='num_doc'/>";
-                        echo "<p><b>Aluguel:</b><br /><input type='text' name='aluguel'/>";
-                        echo "<p><b>Copel:</b><br /><input type='text' name='copel'/>";
-                        echo "<p><b>Sanepar:</b><br /><input type='text' name='sanepar'/>";
-                        echo "<p><b>Material:</b><br /><input type='text' name='material'/>";
-                        echo "<p><b>Iptu:</b><br /><input type='text' name='iptu'/>";
-                        echo "<p><b>Limpeza:</b><br /><input type='text' name='limpeza'/>";
-                        echo "<p><b>Outros:</b><br /><input type='text' name='outros'/>";
-                        ?>
-                    </div>
-                    <div id="side-b">
-                        <?
-                        echo "<p><b>Desconto:</b><br /><input type='text' name='desconto'/>";
-                        echo "<p><b>Pago:</b><br /><input type='text' name='pago'/>";
-                        echo "<p><b>Data Pagto:</b><br /><input type='text' name='data_pagto'/>";
-                        echo "<p><b>Valor Pago:</b><br /><input type='text' name='valor_pago'/>";
-                        echo "<p><input type='submit' value='Add Row' /><input type='hidden' value='1' name='submitted' />";
-                        echo "<br /><br />";
-                        ?>
-                    </div>
-                </div>
-                <div id="footer">
-                </div>
-            </div>
-        </form>
+                    echo "<br /><br />";
+                    echo "<table>";
+                    echo "<tr><td>Ccorrente</td>";
+                    echo"<td><input type='text' name='ccorrente' value=" . stripslashes($row['ccorrente']) . "></td></tr>";
+                    echo "<tr><td>Digito CC</td>";
+                    echo"<td><input type='text' name='digito_cc' value=" . stripslashes($row['digito_cc']) . "></td></tr>";
+                    echo "<tr><td>Banco</td>";
+                    echo"<td><input type='text' name='banco' value=" . stripslashes($row['banco']) . "></td></tr>";
+                    echo "<tr><td>Agencia</td>";
+                    echo"<td><input type='text' name='agencia' value=" . stripslashes($row['agencia']) . "></td></tr>";
+                    echo "<tr><td>Carteira</td>";
+                    echo"<td><input type='text' name='carteira' value=" . stripslashes($row['carteira']) . "></td></tr>";
+                    echo "<tr><td>Nosso Num</td>";
+                    $nosso_num = date('ym', time()) . substr(sprintf("%03d", $imovel_id), 0, 3) . sprintf("%02d", rand(0, 99));
+                    echo"<td><input type='text' name='nosso_num' value=" . $nosso_num . "></td></tr>";
+                    echo "<tr><td>Cedente Codigo</td>";
+                    echo"<td><input type='text' name='cedente_codigo' value=" . stripslashes($row['cedente_codigo']) . "></td></tr>";
+                    echo "<tr><td>Cedente Nome</td>";
+                    echo"<td><input type='text' name='cedente_nome' size=60 value=" . stripslashes($row['cedente_nome']) . "></td></tr>";
+                    echo "<tr><td>Sacado</td>";
+                    echo"<td><input type='text' name='sacado' size=60 value=" . $row['sacado'] . "></td></tr>";
+                    echo "<tr><td>Vencimento</td>";
+                    $data = strtotime(stripslashes($row['vencimento']) . ' +1 month');
+                    echo"<td><input type='text' name='vencimento' value=" . strftime('%Y-%m-%d', $data) . "></td></tr>";
+                    echo "<tr><td>Num Doc</td>";
+                    $num_doc = substr(stripslashes($row['num_doc']), 0, 2);
+                    $parcelas = substr(stripslashes($row['num_doc']), 3, 2);
+                    if ($num_doc > $parcelas)
+                        $num_doc = '01';
+                    else
+                        $num_doc = sprintf("%02d", (int) $num_doc + 1);
+                    $num_doc = $num_doc . substr(stripslashes($row['num_doc']), 2, 3);
+                    echo"<td><input type='text' name='num_doc' value=" . $num_doc . "></td></tr>";
+                    echo "<tr><td>Aluguel</td>";
+                    echo"<td><input type='text' name='aluguel' value=" . stripslashes($row['aluguel']) . "></td></tr>";
+                    echo "<tr><td>Copel</td>";
+                    echo"<td><input type='text' name='copel' value=0></td></tr>";
+                    echo "<tr><td>Sanepar</td>";
+                    echo"<td><input type='text' name='sanepar' value=0></td></tr>";
+                    echo "<tr><td>Material</td>";
+                    echo"<td><input type='text' name='material' value=0></td></tr>";
+                    echo "<tr><td>Iptu</td>";
+                    echo"<td><input type='text' name='iptu' value=" . stripslashes($row['iptu']) . "></td></tr>";
+                    echo "<tr><td>Limpeza</td>";
+                    echo"<td><input type='text' name='limpeza' value=" . stripslashes($row['limpeza']) . "></td></tr>";
+                    echo "<tr><td>Outros</td>";
+                    echo"<td><input type='text' name='outros' value=0></td></tr>";
+                    echo "<tr><td>Desconto</td><td><input type='text' name='desconto' value=" . stripslashes($row['desconto']) . "></td></tr>";
+                    echo "</table>";
+                    echo "<input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' /><br />";
+                }
+            }
+        }
+        echo "</form>";
+        ?>       
     </body>
 </html>

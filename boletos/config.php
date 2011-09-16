@@ -7,4 +7,5 @@ if (!$link) {
 if (! mysql_select_db('aluguel') ) {
     die ('Can\'t use aluguel : ' . mysql_error());
 }
+
 ?>
