@@ -17,9 +17,11 @@ while ($row = mysql_fetch_array($result)) {
         echo "<td valign='top'>Sim</td>";
     else
         echo "<td valign='top'>Nao</td>";
-    echo "<td valign='top'><a href=edit.php?id={$row['id']}>Edit</a></td><td><a href=delete.php?id={$row['id']}>Delete</a></td> ";
+    echo "<td valign='top'><a href=edit.php?id={$row['id']}>Editar</a></td><td><a href=delete.php?id={$row['id']}>Excluir</a></td> ";
     echo "</tr>";
 }
 echo "</table>";
-echo "<a href=new.php>Novo cadastro</a>";
+echo "<a href=new.php>Novo cadastro</a> | ";
+echo "<a href=/locacao/boletos/search.php>Quitar pagamentos</a>";
+mysql_close($link);
 ?>
