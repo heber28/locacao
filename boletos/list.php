@@ -10,7 +10,6 @@ if (isset($_GET['imovel_id'])) {
     $result = mysql_query("SELECT * FROM `boletos` where imovel_id = '$imovel_id'") or trigger_error(mysql_error());
 
     if (mysql_num_rows($result) > 0) {
-
         echo "<table border=1 >";
         echo "<tr>";
         echo "<td><b>Vencimento</b></td>";
@@ -53,7 +52,9 @@ if (isset($_GET['imovel_id'])) {
                 echo "<td valign='top'>Nao</td>";
             echo "<td valign='top'>" . $row['data_pagto'] . "</td>";
             echo "<td valign='top'>" . $row['valor_pago'] . "</td>";
-            echo "<td valign='top'><a href=edit.php?id={$row['id']}&imovel_id=$imovel_id>Editar</a></td><td><a href=delete.php?id={$row['id']}&imovel_id=$imovel_id>Excluir</a></td> ";
+            echo "<td valign='top'><a href=edit.php?id={$row['id']}&imovel_id=$imovel_id>Editar</a></td>";
+            echo "<td valign='top'><a href=delete.php?id={$row['id']}&imovel_id=$imovel_id>Excluir</a></td> ";
+            echo "<td valign='top'><a href=boleto_real.php?id={$row['id']}>Imprimir</a></td>";
             echo "</tr>";
         }
         echo "</table>";

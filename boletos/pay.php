@@ -27,9 +27,10 @@
         $result = mysql_query("SELECT imovel_endereco FROM boletos where id = '$id'") or trigger_error(mysql_error());
         $row = mysql_fetch_row($result);
         $endereco = $row[0];
+        echo "<form method='post'>";
         echo "";
         echo '<strong>' . $endereco . "</strong> | <a href='search.php?'>Voltar</a><br />";
-        $id = (int) $_GET['id'];
+
         if (isset($_POST['submitted'])) {
             foreach ($_POST AS $key => $value) {
                 $_POST[$key] = mysql_real_escape_string($value);
@@ -39,7 +40,6 @@
             echo (mysql_affected_rows()) ? "Cadastro salvo<br />" : "Nada foi alterado <br />";
         }
         $row = mysql_fetch_array(mysql_query("SELECT * ,(aluguel + iptu + sanepar + limpeza + material + copel + outros) as total FROM `boletos` WHERE `id` = '$id' "));
-        echo "<form action='' method='POST'>";
         echo "<br />";
         echo "<table>";
         echo "<tr><td>Nosso Num</td><td>" . stripslashes($row['nosso_num']) . "</td></tr>";
@@ -65,7 +65,7 @@
         echo "<tr><td>Valor pago</td><td><input type='text' name='valor_pago' value=" . stripslashes($row['valor_pago']) . "></td></tr>";
         echo "</table>";
         echo"<p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' />";
-        echo"</form>";
+        echo "</form>";
         mysql_close($link);
         ?>
     </body>

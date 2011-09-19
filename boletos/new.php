@@ -32,8 +32,10 @@
             }
             $sql = "INSERT INTO `boletos` ( `imovel_id` ,  `imovel_endereco` ,  `ccorrente` ,  `digito_cc` ,  `banco` ,  `agencia` ,  `cedente_codigo` ,  `cedente_nome` ,  `carteira` ,  `nosso_num` ,  `vencimento` ,  `num_doc` ,  `sacado` ,  `aluguel` ,  `iptu` ,  `sanepar` ,  `limpeza` ,  `material` ,  `copel` ,  `outros` ,  `desconto` ) VALUES(  '{$_GET['imovel_id']}' , '$endereco' ,  '{$_POST['ccorrente']}' ,  '{$_POST['digito_cc']}' ,  '{$_POST['banco']}' ,  '{$_POST['agencia']}' ,  '{$_POST['cedente_codigo']}' ,  '{$_POST['cedente_nome']}' ,  '{$_POST['carteira']}' ,  '{$_POST['nosso_num']}' ,  '{$_POST['vencimento']}' ,  '{$_POST['num_doc']}' ,  '{$_POST['sacado']}' ,  '{$_POST['aluguel']}' ,  '{$_POST['iptu']}' ,  '{$_POST['sanepar']}' ,  '{$_POST['limpeza']}' ,  '{$_POST['material']}' ,  '{$_POST['copel']}' ,  '{$_POST['outros']}' ,  '{$_POST['desconto']}'  ) ";
             mysql_query($sql) or die(mysql_error());
-            echo "<br />";
+            $id = mysql_insert_id();
+            echo "<br /><br />";
             echo "Cadastro salvo<br />";
+            echo "<a href=boleto_real.php?id=$id>Imprimir boleto</a><br />";
         } else {
             $sql = "select * from boletos where imovel_id = '$imovel_id' and id = (select max(id) from boletos where imovel_id = '$imovel_id')";
             $result = mysql_query($sql) or die(mysql_error());
@@ -114,10 +116,11 @@
                     echo "<tr><td>Num Doc</td>";
                     $num_doc = substr(stripslashes($row['num_doc']), 0, 2);
                     $parcelas = substr(stripslashes($row['num_doc']), 3, 2);
+                    $num_doc = (int) $num_doc + 1;
                     if ($num_doc > $parcelas)
                         $num_doc = '01';
                     else
-                        $num_doc = sprintf("%02d", (int) $num_doc + 1);
+                        $num_doc = sprintf("%02d", $num_doc);
                     $num_doc = $num_doc . substr(stripslashes($row['num_doc']), 2, 3);
                     echo"<td><input type='text' name='num_doc' value=" . $num_doc . "></td></tr>";
                     echo "<tr><td>Aluguel</td>";

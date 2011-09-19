@@ -9,8 +9,7 @@ if (isset($_GET['id'])) {
         }
         $sql = "UPDATE `imoveis` SET  `endereco` =  '{$_POST['endereco']}' ,  `alugado` =  '{$_POST['alugado']}'   WHERE `id` = '$id' ";
         mysql_query($sql) or die(mysql_error());
-        echo (mysql_affected_rows()) ? "Cadastro salvo<br />" : "Nada foi alterado<br />";
-        echo "<a href='list.php'>Voltar</a>";
+        echo (mysql_affected_rows()) ? "Cadastro salvo<br />" : "Nada foi alterado | <a href='list.php'>Voltar</a>";
     }
     $row = mysql_fetch_array(mysql_query("SELECT * FROM `imoveis` WHERE `id` = '$id' "));
 

@@ -15,7 +15,7 @@ if (isset($_GET['submitted'])) {
 
     if (mysql_num_rows($result) == 0)
         exit;
-    echo "<table>";
+    echo "<table border=1 >";
     echo "<tr>";
     echo "<th>nosso num</th>
         <th>sacado</th>

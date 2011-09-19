@@ -24,7 +24,7 @@
             exit;
 
         $imovel_id = (int) $_GET['imovel_id'];
-        $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
+        $result = mysql_query("SELECT imovel_endereco FROM boletos where imovel_id = '$imovel_id'") or trigger_error(mysql_error());
         $row = mysql_fetch_row($result);
         $endereco = $row[0];
         echo "";
