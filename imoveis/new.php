@@ -1,5 +1,7 @@
 <?
-include('config.php');
+
+include('/../session.php');
+include('/../config.php');
 if (isset($_POST['submitted'])) {
     foreach ($_POST AS $key => $value) {
         $_POST[$key] = mysql_real_escape_string($value);

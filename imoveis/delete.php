@@ -1,8 +1,9 @@
 <?
 
+include('/../session.php');
 if (isset($_GET['id'])) {
     $id = (int) $_GET['id'];
-    include('config.php');
+    include('/../config.php');
     $row = mysql_fetch_array(mysql_query("SELECT * FROM `imoveis` WHERE `id` = '$id' "));
     $disabled = '';
     if (isset($_POST['delbutton'])) {

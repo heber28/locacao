@@ -28,7 +28,8 @@
 // Os valores abaixo podem ser colocados manualmente ou ajustados p/ formulario c/ POST, GET ou de BD (MySql,Postgre,etc)  //
 // DADOS DO BOLETO PARA O SEU CLIENTE
 
-include('config.php');
+include('/../session.php');
+include('/../config.php');
 if (isset($_GET['id']) == FALSE)
     exit;
 

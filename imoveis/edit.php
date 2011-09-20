@@ -1,7 +1,8 @@
 <?
 
+include('/../session.php');
 if (isset($_GET['id'])) {
-    include('config.php');
+    include('/../config.php');
     $id = (int) $_GET['id'];
     if (isset($_POST['submitted'])) {
         foreach ($_POST AS $key => $value) {

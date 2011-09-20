@@ -1,3 +1,4 @@
+<? ob_start() ?>
 <html>
     <head>
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
@@ -19,7 +20,8 @@
     </head>
     <body>
         <?
-        include('config.php');
+        include('/../session.php');
+        include('/../config.php');
         if ((isset($_GET['id']) == FALSE) or (isset($_GET['imovel_id']) == FALSE))
             exit;
 
@@ -102,4 +104,4 @@
         ?>
     </body>
 </html>
-
+<? ob_flush() ?>

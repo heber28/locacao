@@ -1,8 +1,9 @@
 <?php
 
-include('config.php');
+include('/../session.php');
+include('/../config.php');
 echo "<form method='GET'>";
-echo "<p>Nosso Numero: ";
+echo "<p>Nosso Numero";
 echo "<input type='text' name='search'>";
 echo "<input type='submit' value='Procurar' /><input type='hidden' value='1' name='submitted' /> | ";
 echo "<a href=/locacao/imoveis/list.php>Voltar</a>";

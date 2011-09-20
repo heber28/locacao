@@ -1,13 +1,14 @@
 <?
 
-include('config.php');
+include('/../session.php');
+include('/../config.php');
 if (isset($_GET['imovel_id'])) {
     $imovel_id = (int) $_GET['imovel_id'];
     $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
     $endereco = mysql_result($result, 0);
     echo '<strong>' . $endereco . '</strong> | <a href=/locacao/imoveis/list.php>Voltar</a><br /><br />';
     $imovel_id = (int) $_GET['imovel_id'];
-    $result = mysql_query("SELECT * FROM `boletos` where imovel_id = '$imovel_id'") or trigger_error(mysql_error());
+    $result = mysql_query("SELECT * FROM `boletos` where imovel_id = '$imovel_id' order by vencimento desc limit 15") or trigger_error(mysql_error());
 
     if (mysql_num_rows($result) > 0) {
         echo "<table border=1 >";

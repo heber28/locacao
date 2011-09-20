@@ -1,9 +1,10 @@
 <?
 
+include('/../session.php');
 if (isset($_GET['imovel_id']) and isset($_GET['id'])) {
     $id = (int) $_GET['id'];
     $imovel_id = (int) $_GET['imovel_id'];
-    include('config.php');
+    include('/../config.php');
     $row = mysql_fetch_array(mysql_query("SELECT * FROM `boletos` WHERE `id` = '$id' "));
     if (isset($_POST['delbutton'])) {
         mysql_query("DELETE FROM `boletos` WHERE `id` = '$id' ");

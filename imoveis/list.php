@@ -1,6 +1,7 @@
 <?
 
-include('config.php');
+include('/../session.php');
+include('/../config.php');
 echo "<table border=1 >";
 echo "<tr>";
 echo "<td><b>Endereco</b></td>";
