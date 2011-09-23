@@ -1,12 +1,15 @@
 <?
 
-include('/../session.php');
-include('/../config.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
 if (isset($_GET['imovel_id'])) {
     $imovel_id = (int) $_GET['imovel_id'];
     $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
     $endereco = mysql_result($result, 0);
     echo '<strong>' . $endereco . '</strong> | <a href=/locacao/imoveis/list.php>Voltar</a><br /><br />';
+    echo "<a href=new.php?imovel_id=$imovel_id>Novo cadastro</a> | ";
+    echo "<a href=bank.php?imovel_id=$imovel_id>Dados bancarios</a><br /><br />";
+
     $imovel_id = (int) $_GET['imovel_id'];
     $result = mysql_query("SELECT * FROM `boletos` where imovel_id = '$imovel_id' order by vencimento desc limit 15") or trigger_error(mysql_error());
 
@@ -27,7 +30,7 @@ if (isset($_GET['imovel_id'])) {
         echo "<td><b>Nosso Num</b></td>";
         echo "<td><b>Pago</b></td>";
         echo "<td><b>Data Pagto</b></td>";
-        echo "<td><b>Valor Pago</b></td>";
+        echo "<td><b>Total Pago</b></td>";
         echo "</tr>";
 
         while ($row = mysql_fetch_array($result)) {
@@ -44,15 +47,22 @@ if (isset($_GET['imovel_id'])) {
             echo "<td valign='top'>" . $row['iptu'] . "</td>";
             echo "<td valign='top'>" . $row['limpeza'] . "</td>";
             echo "<td valign='top'>" . $row['outros'] . "</td>";
-            echo "<td valign='top'>" . number_format(($row['aluguel'] + $row['copel'] + $row['sanepar'] + $row['material'] + $row['iptu'] + $row['limpeza'] + $row['outros']), 2) . "</td>";
+            echo "<td valign='top'>" . ($row['aluguel'] + $row['copel'] + $row['sanepar'] + $row['material'] + $row['iptu'] + $row['limpeza'] + $row['outros']) . "</td>";
             echo "<td valign='top'>" . $row['desconto'] . "</td>";
             echo "<td valign='top'>" . $row['nosso_num'] . "</td>";
             if ($row['pago'] == 1)
                 echo "<td valign='top'>Sim</td>";
             else
                 echo "<td valign='top'>Nao</td>";
-            echo "<td valign='top'>" . $row['data_pagto'] . "</td>";
-            echo "<td valign='top'>" . $row['valor_pago'] . "</td>";
+            if ($row['data_pagto'] == NULL)
+                echo "<td valign='top'>&nbsp</td>";
+            else
+                echo "<td valign='top'>" . $row['data_pagto'] . "</td>";
+
+            if ($row['total_pago'] == NULL)
+                echo "<td valign='top'>&nbsp</td>";
+            else
+                echo "<td valign='top'>" . $row['total_pago'] . "</td>";
             echo "<td valign='top'><a href=edit.php?id={$row['id']}&imovel_id=$imovel_id>Editar</a></td>";
             echo "<td valign='top'><a href=delete.php?id={$row['id']}&imovel_id=$imovel_id>Excluir</a></td> ";
             echo "<td valign='top'><a href=boleto_real.php?id={$row['id']}>Imprimir</a></td>";
@@ -60,8 +70,6 @@ if (isset($_GET['imovel_id'])) {
         }
         echo "</table>";
     }
-    echo "<a href=new.php?imovel_id=$imovel_id>Novo cadastro</a> | ";
-    echo "<a href=bank.php?imovel_id=$imovel_id>Dados bancarios</a>";
     mysql_close($link);
 }
 ?>

@@ -16,8 +16,8 @@
     </head>
     <body>
         <?
-        include('/../session.php');
-        include('/../config.php');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
         echo "<form action='' method='POST'>";
         if (isset($_GET['imovel_id']) == FALSE)
             exit;
@@ -30,7 +30,7 @@
         echo '<strong>' . $endereco . "</strong> | <a href='list.php?imovel_id=$imovel_id'>Voltar</a>";
         if (isset($_POST['submitted'])) {
             foreach ($_POST AS $key => $value) {
-                $_POST[$key] = mysql_real_escape_string($value);
+                $_POST[$key] = mysql_real_escape_string(htmlentities($value));
             }
             $sql = "INSERT INTO `boletos` ( `imovel_id` ,  `imovel_endereco` ,  `ccorrente` ,  `digito_cc` ,  `banco` ,  `agencia` ,  `cedente_codigo` ,  `cedente_nome` ,  `carteira` ,  `nosso_num` ,  `vencimento` ,  `num_doc` ,  `sacado` ,  `aluguel` ,  `iptu` ,  `sanepar` ,  `limpeza` ,  `material` ,  `copel` ,  `outros` ,  `desconto` ) VALUES(  '{$_GET['imovel_id']}' , '$endereco' ,  '{$_POST['ccorrente']}' ,  '{$_POST['digito_cc']}' ,  '{$_POST['banco']}' ,  '{$_POST['agencia']}' ,  '{$_POST['cedente_codigo']}' ,  '{$_POST['cedente_nome']}' ,  '{$_POST['carteira']}' ,  '{$_POST['nosso_num']}' ,  '{$_POST['vencimento']}' ,  '{$_POST['num_doc']}' ,  '{$_POST['sacado']}' ,  '{$_POST['aluguel']}' ,  '{$_POST['iptu']}' ,  '{$_POST['sanepar']}' ,  '{$_POST['limpeza']}' ,  '{$_POST['material']}' ,  '{$_POST['copel']}' ,  '{$_POST['outros']}' ,  '{$_POST['desconto']}'  ) ";
             mysql_query($sql) or die(mysql_error());

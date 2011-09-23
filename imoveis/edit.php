@@ -1,8 +1,9 @@
 <?
 
-include('/../session.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+echo "<h2>Editando o Im&oacute;vel</h2>";
 if (isset($_GET['id'])) {
-    include('/../config.php');
     $id = (int) $_GET['id'];
     if (isset($_POST['submitted'])) {
         foreach ($_POST AS $key => $value) {
@@ -10,7 +11,8 @@ if (isset($_GET['id'])) {
         }
         $sql = "UPDATE `imoveis` SET  `endereco` =  '{$_POST['endereco']}' ,  `alugado` =  '{$_POST['alugado']}'   WHERE `id` = '$id' ";
         mysql_query($sql) or die(mysql_error());
-        echo (mysql_affected_rows()) ? "Cadastro salvo<br />" : "Nada foi alterado | <a href='list.php'>Voltar</a>";
+        echo (mysql_affected_rows()) ? "Cadastro salvo" : "Nada foi alterado";
+        echo " | <a href='list.php'>Voltar</a><br />";
     }
     $row = mysql_fetch_array(mysql_query("SELECT * FROM `imoveis` WHERE `id` = '$id' "));
 

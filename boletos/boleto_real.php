@@ -27,9 +27,8 @@
 // ------------------------- DADOS DINAMICOS DO SEU CLIENTE PARA A GERACAO DO BOLETO (FIXO OU VIA GET) -------------------- //
 // Os valores abaixo podem ser colocados manualmente ou ajustados p/ formulario c/ POST, GET ou de BD (MySql,Postgre,etc)  //
 // DADOS DO BOLETO PARA O SEU CLIENTE
-
-include('/../session.php');
-include('/../config.php');
+#include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
 if (isset($_GET['id']) == FALSE)
     exit;
 
@@ -99,6 +98,7 @@ $dadosboleto["cidade_uf"] = "";
 $dadosboleto["cedente"] = $row["cedente_nome"];
 
 // NAO ALTERAR!
-include("include/funcoes_real.php");
-include("include/layout_real.php");
+include_once("include/funcoes_real.php");
+include_once("include/layout_real.php");
+mysql_close($link);
 ?>

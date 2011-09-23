@@ -20,8 +20,8 @@
     </head>
     <body>
         <?
-        include('/../session.php');
-        include('/../config.php');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
         if (isset($_GET['id']) == FALSE)
             exit;
 
@@ -35,9 +35,9 @@
 
         if (isset($_POST['submitted'])) {
             foreach ($_POST AS $key => $value) {
-                $_POST[$key] = mysql_real_escape_string($value);
+                $_POST[$key] = mysql_real_escape_string(htmlentities($value));
             }
-            $sql = "UPDATE `boletos` SET `pago` =  '{$_POST['pago']}' ,  `data_pagto` =  '{$_POST['data_pagto']}' , `valor_pago` =  '{$_POST['valor_pago']}'   WHERE `id` = '$id' ";
+            $sql = "UPDATE `boletos` SET `pago` =  '{$_POST['pago']}' ,  `data_pagto` =  '{$_POST['data_pagto']}' , `total_pago` =  '{$_POST['total_pago']}'   WHERE `id` = '$id' ";
             mysql_query($sql) or die(mysql_error());
             echo (mysql_affected_rows()) ? "Cadastro salvo<br />" : "Nada foi alterado <br />";
         }
@@ -64,7 +64,7 @@
         echo ">Nao";
         echo "</td></tr>";
         echo "<tr><td>Data do pagto</td><td><input type='text' id='data_pagto' name='data_pagto' value=" . stripslashes($row['data_pagto']) . "></td></tr>";
-        echo "<tr><td>Valor pago</td><td><input type='text' name='valor_pago' value=" . stripslashes($row['valor_pago']) . "></td></tr>";
+        echo "<tr><td>Total Pago</td><td><input type='text' name='total_pago' value=" . stripslashes($row['total_pago']) . "></td></tr>";
         echo "</table>";
         echo"<p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' />";
         echo "</form>";

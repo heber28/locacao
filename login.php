@@ -15,10 +15,10 @@
         echo "<input type='submit' value='Entrar' /><input type='hidden' value='1' name='submitted'>";
         echo "</form>";
         if (isset($_POST['submitted'])) {
-            $usuario = $_POST['usuario'];
-            $senha = $_POST['senha'];
+            $usuario = mysql_real_escape_string(htmlentities($_POST['usuario']));
+            $senha = mysql_real_escape_string(htmlentities($_POST['senha']));
             if ($usuario && $senha) {
-                include('config.php');
+                include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
                 $result = mysql_query("select * from usuarios where usuario='$usuario'");
                 if (mysql_num_rows($result) == 0)
                     echo('Usuario nao encontrado');

@@ -20,8 +20,8 @@
     </head>
     <body>
         <?
-        include('/../session.php');
-        include('/../config.php');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
         if ((isset($_GET['id']) == FALSE) or (isset($_GET['imovel_id']) == FALSE))
             exit;
 
@@ -34,9 +34,37 @@
         $id = (int) $_GET['id'];
         if (isset($_POST['submitted'])) {
             foreach ($_POST AS $key => $value) {
-                $_POST[$key] = mysql_real_escape_string($value);
+                $_POST[$key] = mysql_real_escape_string(htmlentities($value));
             }
-            $sql = "UPDATE `boletos` SET `ccorrente` =  '{$_POST['ccorrente']}' ,  `digito_cc` =  '{$_POST['digito_cc']}' ,  `banco` =  '{$_POST['banco']}' ,  `agencia` =  '{$_POST['agencia']}' ,  `cedente_codigo` =  '{$_POST['cedente_codigo']}' ,  `cedente_nome` =  '{$_POST['cedente_nome']}' ,  `carteira` =  '{$_POST['carteira']}' ,  `nosso_num` =  '{$_POST['nosso_num']}' ,  `vencimento` =  '{$_POST['vencimento']}' ,  `num_doc` =  '{$_POST['num_doc']}' ,  `sacado` =  '{$_POST['sacado']}' ,  `aluguel` =  '{$_POST['aluguel']}' ,  `iptu` =  '{$_POST['iptu']}' ,  `sanepar` =  '{$_POST['sanepar']}' ,  `limpeza` =  '{$_POST['limpeza']}' ,  `material` =  '{$_POST['material']}' ,  `copel` =  '{$_POST['copel']}' ,  `outros` =  '{$_POST['outros']}' ,  `pago` =  '{$_POST['pago']}' ,  `data_pagto` =  '{$_POST['data_pagto']}' ,  `desconto` =  '{$_POST['desconto']}' ,  `valor_pago` =  '{$_POST['valor_pago']}'   WHERE `id` = '$id' ";
+            $sql = "UPDATE `boletos` SET 
+            `ccorrente` =  '{$_POST['ccorrente']}' ,
+            `digito_cc` =  '{$_POST['digito_cc']}' ,
+            `banco` =  '{$_POST['banco']}' ,
+            `agencia` =  '{$_POST['agencia']}' ,
+            `cedente_codigo` =  '{$_POST['cedente_codigo']}' ,
+            `cedente_nome` =  '{$_POST['cedente_nome']}' ,
+            `carteira` =  '{$_POST['carteira']}' ,
+            `nosso_num` =  '{$_POST['nosso_num']}' ,
+            `vencimento` =  '{$_POST['vencimento']}' ,
+            `num_doc` =  '{$_POST['num_doc']}' ,
+            `sacado` =  '{$_POST['sacado']}' ,
+            `aluguel` =  '{$_POST['aluguel']}' ,
+            `iptu` =  '{$_POST['iptu']}' ,
+            `sanepar` =  '{$_POST['sanepar']}' ,
+            `limpeza` =  '{$_POST['limpeza']}' ,
+            `material` =  '{$_POST['material']}' ,
+            `copel` =  '{$_POST['copel']}' ,
+            `outros` =  '{$_POST['outros']}' ,
+            `pago` =  '{$_POST['pago']}' ,
+            `desconto` =  '{$_POST['desconto']}'";
+
+            if ($_POST['data_pagto'] != NULL)
+                $sql = $sql . ", `data_pagto` =  '{$_POST['data_pagto']}'";
+
+            if ($_POST['total_pago'] != NULL)
+                $sql = $sql . ", `total_pago` =  '{$_POST['total_pago']}'";
+
+            $sql = $sql . " WHERE `id` = '$id' ";
             mysql_query($sql) or die(mysql_error());
             echo (mysql_affected_rows()) ? "Cadastro salvo<br />" : "Nada foi alterado <br />";
         }
@@ -96,7 +124,7 @@
         echo ">Nao";
         echo "</td></tr>";
         echo "<tr><td>Data do pagto</td><td><input type='text' id='data_pagto' name='data_pagto' value=" . stripslashes($row['data_pagto']) . "></td></tr>";
-        echo "<tr><td>Valor pago</td><td><input type='text' name='valor_pago' value=" . stripslashes($row['valor_pago']) . "></td></tr>";
+        echo "<tr><td>Total Pago</td><td><input type='text' name='total_pago' value=" . stripslashes($row['total_pago']) . "></td></tr>";
         echo "</table>";
         echo"<p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' />";
         echo"</form>";
