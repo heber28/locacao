@@ -4,7 +4,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
 
 echo "<h2>Listagem de Im&oacute;veis</h2>";
-echo "<a href=new.php>Novo cadastro</a> | ";
+echo "<a href=new.php>Novo im&oacute;vel</a> | ";
 echo "<a href=/locacao/boletos/search.php>Quitar pagamentos</a><br /><br />";
 echo "<table border=1 >";
 echo "<tr>";

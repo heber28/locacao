@@ -1,57 +1,37 @@
 <?php
-
 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
-echo "<h2>Quitar Pagamentos</h2>";
-echo "<a href=/locacao/imoveis/list.php>Voltar</a>";
-echo "<form method='GET'>";
-echo "<p>Nosso N&uacute;mero";
-echo "<input type='text' name='search'>";
-echo "<input type='submit' value='Procurar' /><input type='hidden' value='1' name='submitted' />";
-echo "</form>";
-
-if (isset($_GET['submitted'])) {
-    $search = mysql_real_escape_string(htmlentities($_GET['search']));
-    $sql = "SELECT id, nosso_num, sacado, vencimento, (aluguel + iptu + sanepar + limpeza + material + copel + outros) as total, desconto, pago, data_pagto, total_pago from boletos where nosso_num like '%$search%' ";
-    $result = mysql_query($sql) or die(mysql_error());
-
-    if (mysql_num_rows($result) == 0)
-        exit;
-    echo "<table border=1 >";
-    echo "<tr>";
-    echo "<td><b>Nosso Num</b></td>
-        <td><b>Sacado</b></td>
-        <td><b>Vencimento</b></td>
-        <td><b>Total</b></td>
-        <td><b>Desconto</b></td>
-        <td><b>Pago</b></td>
-        <td><b>Data Pagto</b></td>
-        <td><b>Total Pago</b></td>
-        <td></td>";
-    echo "</tr>";
-
-    while ($row = mysql_fetch_array($result)) {
-        foreach ($row AS $key => $value) {
-            $row[$key] = stripslashes($value);
-        }
-        echo "<tr>";
-        echo "<td valign='top'>" . $row['nosso_num'] . "</td>";
-        echo "<td valign='top'>" . $row['sacado'] . "</td>";
-        echo "<td valign='top'>" . $row['vencimento'] . "</td>";
-        echo "<td valign='top' align='right'>" . $row['total'] . "</td>";
-        echo "<td valign='top' align='right'>" . $row['desconto'] . "</td>";
-        echo "<td valign='top'>";
-        if ($row['pago'] == 1)
-            echo 'sim';
-        else
-            echo 'nao';
-        echo "</td>";
-        echo "<td valign='top'>" . $row['data_pagto'] . "</td>";
-        echo "<td valign='top'>" . $row['total_pago'] . "</td>";
-        echo "<td valign='top'><a href=pay.php?id=" . $row['id'] . ">Editar</a></td> ";
-        echo "</tr>";
-    }
-    echo "</table>";
-}
-mysql_close($link);
 ?>
+
+<html>
+    <head>
+        <style type="text/css">
+            #feedback {
+                line-height: 0px;
+            }
+        </style>
+        <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(
+            function() {
+                $('#nosso_num_input').keyup(
+                function() {
+                    $.post('search_result.php', { nosso_num: form.nosso_num.value },
+                    function(result) {
+                        $('#feedback').html(result).show();
+                    });
+                });
+            });
+
+        </script>
+
+    </head>
+
+
+    <h2>Quitar Pagamentos</h2>
+    <form name="form" action="">
+        Nosso N&uacute;mero
+        <input type='text' id='nosso_num_input' name='nosso_num'>&nbsp;<a href=/locacao/imoveis/list.php>Voltar</a>
+    </form>
+    <div id="feedback"></div>
+
+</html>

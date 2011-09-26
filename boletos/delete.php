@@ -15,6 +15,7 @@ if (isset($_GET['imovel_id']) and isset($_GET['id'])) {
         echo " | <a href='list.php?imovel_id=$imovel_id'>Voltar</a><br /><br />";
     } else {
         echo "<form action='' method='POST'>";
+        echo "<h2>Exclu&iacute;ndo o Boleto</h2>";
         echo 'Tem certeza que deseja excluir o boleto: ' . $row['vencimento'] . ' de ' . $row['sacado'] . '?<br /><br />';
         echo "<input name='delbutton' value='Excluir' type='submit'>";
         echo "<input name='cancelbutton' value='Cancelar' type='submit'>";

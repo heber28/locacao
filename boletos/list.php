@@ -5,9 +5,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
 if (isset($_GET['imovel_id'])) {
     $imovel_id = (int) $_GET['imovel_id'];
     $result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());
-    $endereco = mysql_result($result, 0);
+    $endereco = mysql_result($result, 0);    
     echo '<strong>' . $endereco . '</strong> | <a href=/locacao/imoveis/list.php>Voltar</a><br /><br />';
-    echo "<a href=new.php?imovel_id=$imovel_id>Novo cadastro</a> | ";
+    echo "<a href=new.php?imovel_id=$imovel_id>Novo boleto</a> | ";
     echo "<a href=bank.php?imovel_id=$imovel_id>Dados bancarios</a><br /><br />";
 
     $imovel_id = (int) $_GET['imovel_id'];
@@ -47,7 +47,7 @@ if (isset($_GET['imovel_id'])) {
             echo "<td valign='top'>" . $row['iptu'] . "</td>";
             echo "<td valign='top'>" . $row['limpeza'] . "</td>";
             echo "<td valign='top'>" . $row['outros'] . "</td>";
-            echo "<td valign='top'>" . ($row['aluguel'] + $row['copel'] + $row['sanepar'] + $row['material'] + $row['iptu'] + $row['limpeza'] + $row['outros']) . "</td>";
+            echo "<td valign='top'>" . number_format($row['aluguel'] + $row['copel'] + $row['sanepar'] + $row['material'] + $row['iptu'] + $row['limpeza'] + $row['outros'], 2, '.', '') . "</td>";
             echo "<td valign='top'>" . $row['desconto'] . "</td>";
             echo "<td valign='top'>" . $row['nosso_num'] . "</td>";
             if ($row['pago'] == 1)
