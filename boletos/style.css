@@ -1,0 +1,52 @@
+/* 
+    Document   : style
+    Created on : 27/09/2011, 08:34:00
+    Author     : Heber
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#wrapper {
+    text-align: left;
+    margin: 0px auto;
+    padding: 0px;
+    border:0;
+    /*width: 700px;*/
+    /*background: url("/path/to/your/background_cols.gif") repeat;*/
+}
+
+#header {
+    margin: 0 0 30px 0;
+    /*background: yellow;*/
+}
+
+#side-a {
+    float: left;
+    width: 40%;
+}
+
+#side-b {
+    float: left;
+    width: 20%;
+}
+
+#side-c {
+    float: left;
+    width: 20%;
+}
+
+#side-d {
+    float: left;
+    width: 20%;
+}
+
+
+#footer {
+    clear: both;
+    background: #A2A2A2;
+}

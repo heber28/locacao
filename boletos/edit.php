@@ -1,6 +1,7 @@
 <? ob_start() ?>
 <html>
     <head>
+        <link href="style.css" rel="stylesheet" type="text/css">
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
@@ -20,6 +21,8 @@
     </head>
     <body>
         <?
+        echo "<div id='wrapper'>";
+        echo "<div id='header'>";
         include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
         include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
         if ((isset($_GET['id']) == FALSE) or (isset($_GET['imovel_id']) == FALSE))
@@ -68,66 +71,85 @@
             mysql_query($sql) or die(mysql_error());
             echo (mysql_affected_rows()) ? "Cadastro salvo<br />" : "Nada foi alterado <br />";
         }
+        echo "</div>"; #header
+
+        echo "<div id='container'>";
+        echo "<div id='side-a'>";
+
         $row = mysql_fetch_array(mysql_query("SELECT * FROM `boletos` WHERE `id` = '$id' "));
         echo "<form action='' method='POST'>";
-        echo "<br />";
-        echo "<table>";
-        echo "<tr><td>Ccorrente</td>";
-        echo "<td><input type='text' name='ccorrente' value=" . stripslashes($row['ccorrente']) . "></td></tr>";
-        echo "<tr><td>Digito CC</td>";
-        echo "<td><input type='text' name='digito_cc' value=" . stripslashes($row['digito_cc']) . "></td></tr>";
-        echo "<tr><td>Banco</td>";
-        echo "<td><input type='text' name='banco' value=" . stripslashes($row['banco']) . "></td></tr>";
-        echo "<tr><td>Agencia</td>";
-        echo "<td><input type='text' name='agencia' value=" . stripslashes($row['agencia']) . "></td></tr>";
-        echo "<tr><td>Carteira</td>";
-        echo "<td><input type='text' name='carteira' value=" . stripslashes($row['carteira']) . "></td></tr>";
-        echo "<tr><td>Nosso Num</td>";
-        echo "<td><input type='text' name='nosso_num' value=" . stripslashes($row['nosso_num']) . "></td></tr>";
-        echo "<tr><td>Cedente Codigo</td>";
-        echo "<td><input type='text' name='cedente_codigo' value=" . stripslashes($row['cedente_codigo']) . "></td></tr>";
-        echo "<tr><td>Cedente Nome</td>";
-        echo "<td><input type='text' name='cedente_nome' size=60 value='" . stripslashes($row['cedente_nome']) . "'></td></tr>";
-        echo "<tr><td>Sacado</td>";
-        echo "<td><input type='text' name='sacado' size=60 value='" . stripslashes($row['sacado']) . "'></td></tr>";
-        echo "<tr><td>Vencimento</td>";
-        echo "<td><input type='text' id='vencimento' name='vencimento' value=" . stripslashes($row['vencimento']) . "></td></tr>";
-        echo "<tr><td>Num Doc</td>";
-        echo "<td><input type='text' name='num_doc' value=" . stripslashes($row['num_doc']) . "></td></tr>";
-        echo "<tr><td>Aluguel</td>";
-        echo "<td><input type='text' name='aluguel' value=" . stripslashes($row['aluguel']) . "></td></tr>";
-        echo "<tr><td>Copel</td>";
-        echo "<td><input type='text' name='copel' value=" . stripslashes($row['copel']) . "></td></tr>";
-        echo "<tr><td>Sanepar</td>";
-        echo "<td><input type='text' name='sanepar' value=" . stripslashes($row['sanepar']) . "></td></tr>";
-        echo "<tr><td>Material</td>";
-        echo "<td><input type='text' name='material' value=" . stripslashes($row['material']) . "></td></tr>";
-        echo "<tr><td>Iptu</td>";
-        echo "<td><input type='text' name='iptu' value=" . stripslashes($row['iptu']) . "></td></tr>";
-        echo "<tr><td>Limpeza</td>";
-        echo "<td><input type='text' name='limpeza' value=" . stripslashes($row['limpeza']) . "></td></tr>";
-        echo "<tr><td>Outros</td>";
-        echo "<td><input type='text' name='outros' value=" . stripslashes($row['outros']) . "></td></tr>";
-        echo "<tr><td>Desconto</td><td><input type='text' name='desconto' value=" . stripslashes($row['desconto']) . "></td></tr>";
+        echo "Conta Corrente<br />";
+        echo "<input type='text' name='ccorrente' value=" . stripslashes($row['ccorrente']) . "><br />";
+        echo "Digito CC<br />";
+        echo "<input type='text' name='digito_cc' value=" . stripslashes($row['digito_cc']) . "><br />";
+        echo "Banco<br />";
+        echo "<input type='text' name='banco' value=" . stripslashes($row['banco']) . "><br />";
+        echo "Agencia<br />";
+        echo "<input type='text' name='agencia' value=" . stripslashes($row['agencia']) . "><br />";
+        echo "Carteira<br />";
+        echo "<input type='text' name='carteira' value=" . stripslashes($row['carteira']) . "><br />";
+        echo "Nosso Num<br />";
+        echo "<input type='text' name='nosso_num' value=" . stripslashes($row['nosso_num']) . "><br />";
+        echo "Cedente Codigo<br />";
+        echo "<input type='text' name='cedente_codigo' value=" . stripslashes($row['cedente_codigo']) . "><br />";
+        echo "Cedente Nome<br />";
+        echo "<input type='text' name='cedente_nome' size=60 value='" . stripslashes($row['cedente_nome']) . "'><br />";
+        echo "Sacado<br />";
+        echo "<input type='text' name='sacado' size=60 value='" . stripslashes($row['sacado']) . "'><br />";
 
-        echo "<tr>";
-        echo "<td>Pago</td><td>";
+        echo "</div>";
+        echo "<div id='side-b'>";
+
+        echo "Vencimento<br />";
+        echo "<input type='text' id='vencimento' name='vencimento' value=" . stripslashes($row['vencimento']) . "><br />";
+        echo "Num Doc<br />";
+        echo "<input type='text' name='num_doc' value=" . stripslashes($row['num_doc']) . "><br />";
+        echo "Aluguel<br />";
+        echo "<input type='text' name='aluguel' value=" . stripslashes($row['aluguel']) . "><br />";
+        echo "Copel<br />";
+        echo "<input type='text' name='copel' value=" . stripslashes($row['copel']) . "><br />";
+        echo "Sanepar<br />";
+        echo "<input type='text' name='sanepar' value=" . stripslashes($row['sanepar']) . "><br />";
+
+        echo "</div>";
+        echo "<div id='side-c'>";
+
+        echo "Material<br />";
+        echo "<input type='text' name='material' value=" . stripslashes($row['material']) . "><br />";
+        echo "Iptu<br />";
+        echo "<input type='text' name='iptu' value=" . stripslashes($row['iptu']) . "><br />";
+        echo "Limpeza<br />";
+        echo "<input type='text' name='limpeza' value=" . stripslashes($row['limpeza']) . "><br />";
+        echo "Outros<br />";
+        echo "<input type='text' name='outros' value=" . stripslashes($row['outros']) . "><br />";
+        echo "Desconto<br />";
+        echo "<input type='text' name='desconto' value=" . stripslashes($row['desconto']) . "><br />";
+
+        echo "</div>";
+        echo "<div id='side-d'>";
+        echo "Pago<br />";
         echo "<input type='radio' name='pago' value='1'";
         if (isset($row['pago']) && $row['pago'] == 1) {
             echo 'checked';
         }
-        echo ">Sim";
+        echo ">Sim&nbsp;&nbsp;&nbsp;";
         echo "<input type='radio' name='pago' value='0'";
         if (isset($row['pago']) && $row['pago'] == 0) {
             echo 'checked';
         }
         echo ">Nao";
-        echo "</td></tr>";
-        echo "<tr><td>Data do pagto</td><td><input type='text' id='data_pagto' name='data_pagto' value=" . stripslashes($row['data_pagto']) . "></td></tr>";
-        echo "<tr><td>Total Pago</td><td><input type='text' name='total_pago' value=" . stripslashes($row['total_pago']) . "></td></tr>";
-        echo "</table>";
-        echo"<p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' />";
+        echo "<br /><br />";
+        echo "Data do pagto<br />";
+        echo "<input type='text' id='data_pagto' name='data_pagto' value=" . stripslashes($row['data_pagto']) . "><br />";
+        echo "Total Pago<br />";
+        echo "<input type='text' name='total_pago' value=" . stripslashes($row['total_pago']) . "><br />";
+        echo"<p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' /><br />";
         echo"</form>";
+
+        echo "</div>";
+        echo "</div>"; #container
+        echo "</div>"; #wrapper
+
         mysql_close($link);
         ?>
     </body>
