@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | BoletoPhp - Versao Beta                                              |
 // +----------------------------------------------------------------------+
-// | Este arquivo esta disponovel sob a Licenca GPL disponivel pela Web   |
+// | Este arquivo esta disponivel sob a Licenca GPL disponivel pela Web   |
 // | em http://pt.wikipedia.org/wiki/GNU_General_Public_License           |
 // | Voce deve ter recebido uma copia da GNU Public License junto com     |
 // | esse pacote; se nao, escreva para:                                   |
@@ -30,7 +30,7 @@
 #include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
 if (isset($_GET['id']) == FALSE)
-    exit;
+exit;
 
 $id = (int) $_GET['id'];
 $row = mysql_fetch_array(mysql_query("SELECT *, (aluguel + iptu + sanepar + limpeza + material + copel + outros) as total, (sanepar + limpeza + material + copel + outros) as condominio FROM `boletos` WHERE `id` = '$id' "));
@@ -52,27 +52,27 @@ $dadosboleto["endereco2"] = "Londrina/PR";
 // INFORMACOES PARA O CLIENTE
 
 if ($row['condominio'] == 0) {
-    if ($row['iptu'] == 0)
-        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ")";
-    else
-        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e IPTU (R$ " . $row['iptu'] . ")";
+	if ($row['iptu'] == 0)
+	$dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ")";
+	else
+	$dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e IPTU (R$ " . $row['iptu'] . ")";
 }
 else {
-    if ($row['iptu'] == 0)
-        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e Condominio (R$ " . $row['condominio'] . ")";
-    else
-        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e Condominio (R$ " . $row['condominio'] . ") e IPTU (R$ " . $row['iptu'] . ")";
+	if ($row['iptu'] == 0)
+	$dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e Condominio (R$ " . $row['condominio'] . ")";
+	else
+	$dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e Condominio (R$ " . $row['condominio'] . ") e IPTU (R$ " . $row['iptu'] . ")";
 }
 $dadosboleto["demonstrativo2"] = "";
 $dadosboleto["demonstrativo3"] = "";
 
 # FreeBoleto1.Instrucoes.Add('APOS O VENCIMENTO MORA DIARIA DE R$ ' + FormatFloat('0.00', qBoleto.FieldByName('total').AsCurrency / 300) + ' E MULTA DE 2%');
 if ($row['desconto'] > 0) {
-    $dadosboleto["instrucoes1"] = "Ate o vencimento conceder desconto de R$ " . number_format($row['desconto'], 2, ',', '');
-    $dadosboleto["instrucoes2"] = "Apos o vencimento mora diaria de R$ " . number_format($row['total'] / 300, 2, ',', '') . " e multa de 2%";
+	$dadosboleto["instrucoes1"] = "Ate o vencimento conceder desconto de R$ " . number_format($row['desconto'], 2, ',', '');
+	$dadosboleto["instrucoes2"] = "Apos o vencimento mora diaria de R$ " . number_format($row['total'] / 300, 2, ',', '') . " e multa de 2%";
 } else {
-    $dadosboleto["instrucoes1"] = "Apos o vencimento mora diaria de R$ " . number_format($row['total'] / 300, 2, ',', '') . " e multa de 2%";
-    $dadosboleto["instrucoes2"] = "";
+	$dadosboleto["instrucoes1"] = "Apos o vencimento mora diaria de R$ " . number_format($row['total'] / 300, 2, ',', '') . " e multa de 2%";
+	$dadosboleto["instrucoes2"] = "";
 }
 $dadosboleto["instrucoes3"] = "";
 $dadosboleto["instrucoes4"] = "";

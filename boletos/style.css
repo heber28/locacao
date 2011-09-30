@@ -10,43 +10,61 @@
    TODO customize this sample style
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
-
 #wrapper {
-    text-align: left;
-    margin: 0px auto;
-    padding: 0px;
-    border:0;
-    /*width: 700px;*/
-    /*background: url("/path/to/your/background_cols.gif") repeat;*/
+	text-align: left;
+	margin: 0px auto;
+	padding: 0px;
+	border: 0;
+	/*width: 700px;*/
+	/*background: url("/path/to/your/background_cols.gif") repeat;*/
 }
 
 #header {
-    margin: 0 0 30px 0;
-    /*background: yellow;*/
+	margin: 0 0 30px 0;
+	/*background: yellow;*/
+}
+
+#mensagem {
+	display: none; 
+	position: absolute;
+	top: 0px;
+	left: 0px;	
+	height: 40px;
+	border: 0px;	
+	width: 100%;
+	overflow: hidden;
+	background: green;
+}
+
+#texto {
+	margin-top : 10px;
+	font-size: 16px;
+	font-weight: bold;	
+	text-align: center;	
+	color: white;
 }
 
 #side-a {
-    float: left;
-    width: 40%;
+	float: left;
+	width: 40%;
 }
 
 #side-b {
-    float: left;
-    width: 20%;
+	float: left;
+	width: 20%;
 }
 
 #side-c {
-    float: left;
-    width: 20%;
+	float: left;
+	width: 20%;
 }
 
 #side-d {
-    float: left;
-    width: 20%;
+	float: left;
+	width: 20%;
 }
 
-
 #footer {
-    clear: both;
-    background: #A2A2A2;
+	clear: both;
+	background: #A2A2A2;
 }

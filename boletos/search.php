@@ -3,14 +3,14 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
 ?>
 
 <html>
-    <head>
-        <style type="text/css">
-            #feedback {
-                line-height: 0px;
-            }
-        </style>
-        <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript">
+<head>
+<style type="text/css">
+#feedback {
+	line-height: 0px;
+}
+</style>
+<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript">
             $(document).ready(
             function() {
                 $('#nosso_num_input').keyup(
@@ -24,14 +24,14 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
 
         </script>
 
-    </head>
+</head>
 
 
-    <h2>Quitar Pagamentos</h2>
-    <form name="form" action="">
-        Nosso N&uacute;mero
-        <input type='text' id='nosso_num_input' name='nosso_num'>&nbsp;<a href=/locacao/imoveis/list.php>Voltar</a>
-    </form>
-    <div id="feedback"></div>
+<h2>Quitar Pagamentos</h2>
+<form name="form" action="">
+	Nosso N&uacute;mero <input type='text' id='nosso_num_input'
+		name='nosso_num'>&nbsp;<a href=/locacao/imoveis/list.php>Voltar</a>
+</form>
+<div id="feedback"></div>
 
 </html>
