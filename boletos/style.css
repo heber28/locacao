@@ -25,22 +25,22 @@
 }
 
 #mensagem {
-	display: none; 
+	display: none;
 	position: absolute;
 	top: 0px;
-	left: 0px;	
+	left: 0px;
 	height: 40px;
-	border: 0px;	
+	border: 0px;
 	width: 100%;
 	overflow: hidden;
 	background: green;
 }
 
 #texto {
-	margin-top : 10px;
+	margin-top: 10px;
 	font-size: 16px;
-	font-weight: bold;	
-	text-align: center;	
+	font-weight: bold;
+	text-align: center;
 	color: white;
 }
 

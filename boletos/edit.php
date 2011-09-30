@@ -20,8 +20,27 @@
                 });
             });
         </script>
+
+<script type="text/javascript">
+            function calcularTotal()
+            {
+                var total = parseFloat(document.forms["form"]["aluguel"].value)
+                    + parseFloat(document.forms["form"]["copel"].value)
+                    + parseFloat(document.forms["form"]["sanepar"].value)
+                    + parseFloat(document.forms["form"]["material"].value)
+                    + parseFloat(document.forms["form"]["iptu"].value)
+                    + parseFloat(document.forms["form"]["limpeza"].value)
+                    + parseFloat(document.forms["form"]["outros"].value);
+                //$('#Total').html(total.toFixed(2));
+                document.forms["form"]["total"].value = total.toFixed(2);
+                total = total - parseFloat(document.forms["form"]["desconto"].value);
+                //$('#TotalComDesconto').html(total.toFixed(2));
+                document.forms["form"]["total_com_desconto"].value = total.toFixed(2);                                                
+            }
+        </script>
+
 </head>
-<body>
+<body onload="calcularTotal()">
 	<div id='wrapper'>
 		<div id='header'>
 		<?
@@ -81,14 +100,14 @@
 
 		<div id='mensagem'>
 			<script type='text/javascript'>
-			var msg = "<?php echo $msg?>";			
-			if (msg != '') {
-				  scroll(msg);
-				}			  
-			</script>
+                        var msg = "<?php echo $msg ?>";
+                        if (msg != '') {
+                            scroll(msg);
+                        }
+                    </script>
 		</div>
 
-		<form action='' method='POST'>
+		<form name='form' action='' method='POST'>
 
 			<div id='container'>
 				<div id='side-a'>
@@ -114,27 +133,44 @@
 				<div id='side-b'>
 					Vencimento<br /> <input type='text' id='vencimento'
 						name='vencimento' value='<?= stripslashes($row['vencimento']) ?>'><br />
+						
 					Num Doc<br /> <input type='text' name='num_doc'
-						value='<?= stripslashes($row['num_doc']) ?>'><br /> Aluguel<br />
+						value='<?= stripslashes($row['num_doc']) ?>'><br /> 
+						
+					Aluguel<br />
 					<input type='text' name='aluguel'
-						value='<?= stripslashes($row['aluguel']) ?>'><br /> Copel<br /> <input
+						value='<?= stripslashes($row['aluguel']) ?>' onBlur='calcularTotal()'><br /> 
+						
+					Copel<br /> <input
 						type='text' name='copel'
-						value='<?= stripslashes($row['copel']) ?>'><br /> Sanepar<br /> <input
+						value='<?= stripslashes($row['copel']) ?>' onBlur='calcularTotal()'><br /> 
+						
+					Sanepar<br /> <input
 						type='text' name='sanepar'
-						value='<?= stripslashes($row['sanepar']) ?>'><br />
+						value='<?= stripslashes($row['sanepar']) ?>' onBlur='calcularTotal()'><br />
 				</div>
 				<div id='side-c'>
 					Material<br /> <input type='text' name='material'
-						value='<?= stripslashes($row['material']) ?>'><br /> Iptu<br /> <input
-						type='text' name='iptu' value='<?= stripslashes($row['iptu']) ?>'><br />
+						value='<?= stripslashes($row['material']) ?>' onBlur='calcularTotal()'><br /> 
+						
+					Iptu<br /> <input type='text' name='iptu' 
+					    value='<?= stripslashes($row['iptu']) ?>' onBlur='calcularTotal()'><br />
+												
 					Limpeza<br /> <input type='text' name='limpeza'
-						value='<?= stripslashes($row['limpeza']) ?>'><br /> Outros<br /> <input
-						type='text' name='outros'
-						value='<?= stripslashes($row['outros']) ?>'><br /> Desconto<br />
-					<input type='text' name='desconto'
-						value='<?= stripslashes($row['desconto']) ?>'><br />
+					    value='<?= stripslashes($row['limpeza']) ?>' onBlur='calcularTotal()'><br />						
+						
+					Outros<br /> <input type='text' name='outros'
+						value='<?= stripslashes($row['outros']) ?>' onBlur='calcularTotal()'><br /> 
+						
+					Desconto<br /><input type='text' name='desconto'
+						value='<?= stripslashes($row['desconto']) ?>' onBlur='calcularTotal()'><br />
 				</div>
 				<div id='side-d'>
+					Total<br />										
+					<input type='text' name='total' readonly="readonly"><br />
+					Total com Desconto<br />
+					<input type='text' name='total_com_desconto' readonly="readonly"><br />
+					
 					Pago<br /> <input type='radio' name='pago' value='1'
 					<?
 					if (isset($row['pago']) && $row['pago'] == 1) {
@@ -145,14 +181,17 @@
 					if (isset($row['pago']) && $row['pago'] == 0) {
 						echo 'checked';
 					}
-					?>>Nao <br /> <br /> Data do pagto<br /> <input type='text'
+					?>>Nao <br />
+					
+					Data do pagto<br /> <input type='text'
 						id='data_pagto' name='data_pagto'
-						value='<?= stripslashes($row['data_pagto']) ?> '><br /> Total Pago<br />
-					<input type='text' name='total_pago'
+						value='<?= stripslashes($row['data_pagto']) ?> '><br /> 
+						
+				    Total Pago<br />
+						<input type='text' name='total_pago'
 						value='<?= stripslashes($row['total_pago']) ?>'><br />
-					<p>
-						<input type='submit' value='Salvar' /><input type='hidden'
-							value='1' name='submitted' />
+					<p> 
+						<input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' />
 					</p>
 					<br />
 				</div>
@@ -160,6 +199,7 @@
 		</form>
 	</div>
 </body>
+
 </html>
 					<?
 					mysql_close($link);
