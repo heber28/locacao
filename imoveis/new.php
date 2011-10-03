@@ -1,6 +1,7 @@
 <?
 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+echo "<a href='list.php'>Voltar</a><br />";
 echo "<h2>Novo Im&oacute;vel</h2>";
 if (isset($_POST['submitted'])) {
 	foreach ($_POST AS $key => $value) {
@@ -8,9 +9,7 @@ if (isset($_POST['submitted'])) {
 	}
 	$sql = "INSERT INTO `imoveis` ( `endereco` ,  `alugado`  ) VALUES(  '{$_POST['endereco']}' ,  '{$_POST['alugado']}'  ) ";
 	mysql_query($sql) or die(mysql_error());
-	echo "Cadastro salvo";
-	echo " | <a href='list.php'>Voltar</a>";
-	echo "<br />";
+	echo "Cadastro salvo<br />";	
 	mysql_close($link);
 } else {
 	?>

@@ -28,9 +28,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
 
 
 <h2>Quitar Pagamentos</h2>
+<a href=/locacao/imoveis/list.php>Voltar</a><br /><br />
 <form name="form" action="">
 	Nosso N&uacute;mero <input type='text' id='nosso_num_input'
-		name='nosso_num'>&nbsp;<a href=/locacao/imoveis/list.php>Voltar</a>
+		name='nosso_num'>
 </form>
 <div id="feedback"></div>
 

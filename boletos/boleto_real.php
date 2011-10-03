@@ -1,88 +1,105 @@
 <?php
+
 // +----------------------------------------------------------------------+
-// | BoletoPhp - Versão Beta                                              |
+// | BoletoPhp - Versao Beta                                              |
 // +----------------------------------------------------------------------+
-// | Este arquivo está disponível sob a Licença GPL disponível pela Web   |
+// | Este arquivo esta disponovel sob a Licenca GPL disponivel pela Web   |
 // | em http://pt.wikipedia.org/wiki/GNU_General_Public_License           |
-// | Você deve ter recebido uma cópia da GNU Public License junto com     |
-// | esse pacote; se não, escreva para:                                   |
+// | Voce deve ter recebido uma copia da GNU Public License junto com     |
+// | esse pacote; se nao, escreva para:                                   |
 // |                                                                      |
 // | Free Software Foundation, Inc.                                       |
 // | 59 Temple Place - Suite 330                                          |
 // | Boston, MA 02111-1307, USA.                                          |
 // +----------------------------------------------------------------------+
-
 // +----------------------------------------------------------------------+
-// | Originado do Projeto BBBoletoFree que tiveram colaborações de Daniel |
+// | Originado do Projeto BBBoletoFree que tiveram colaboracoes de Daniel |
 // | William Schultz e Leandro Maniezo que por sua vez foi derivado do	  |
-// | PHPBoleto de João Prado Maia e Pablo Martins F. Costa				        |
-// | 																	                                    |
+// | PHPBoleto de Joao Prado Maia e Pablo Martins F. Costa	          |
+// |           			                                          |
 // | Se vc quer colaborar, nos ajude a desenvolver p/ os demais bancos :-)|
 // | Acesse o site do Projeto BoletoPhp: www.boletophp.com.br             |
 // +----------------------------------------------------------------------+
-
 // +----------------------------------------------------------------------+
-// | Equipe Coordenação Projeto BoletoPhp: <boletophp@boletophp.com.br>   |
-// | Desenvolvimento Boleto Real: Juan Basso         		                  |
+// | Equipe Coordenacao Projeto BoletoPhp: <boletophp@boletophp.com.br>   |
+// | Desenvolvimento Boleto Real: Juan Basso         		          |
 // +----------------------------------------------------------------------+
-
-
-// ------------------------- DADOS DINÂMICOS DO SEU CLIENTE PARA A GERAÇÃO DO BOLETO (FIXO OU VIA GET) -------------------- //
-// Os valores abaixo podem ser colocados manualmente ou ajustados p/ formulário c/ POST, GET ou de BD (MySql,Postgre,etc)	//
-
+// ------------------------- DADOS DINAMICOS DO SEU CLIENTE PARA A GERACAO DO BOLETO (FIXO OU VIA GET) -------------------- //
+// Os valores abaixo podem ser colocados manualmente ou ajustados p/ formulario c/ POST, GET ou de BD (MySql,Postgre,etc)  //
 // DADOS DO BOLETO PARA O SEU CLIENTE
-$dias_de_prazo_para_pagamento = 5;
-$taxa_boleto = 2.95;
-$data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));  // Prazo de X dias OU informe data: "13/04/2006"; 
-$valor_cobrado = "2950,00"; // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
-$valor_cobrado = str_replace(",", ".",$valor_cobrado);
-$valor_boleto=number_format($valor_cobrado+$taxa_boleto, 2, ',', '');
+#include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+if (isset($_GET['id']) == FALSE)
+    exit;
 
-$dadosboleto["nosso_numero"] = "0000000123456";  // Nosso numero - REGRA: Máximo de 13 caracteres!
-$dadosboleto["numero_documento"] = "1234567";	// Num do pedido ou do documento
+$id = (int) $_GET['id'];
+$row = mysql_fetch_array(mysql_query("SELECT *, (aluguel + iptu + sanepar + limpeza + material + copel + outros) as total, (sanepar + limpeza + material + copel + outros) as condominio FROM `boletos` WHERE `id` = '$id' "));
+$imovel_id = $row['imovel_id'];
+echo "<a href=new.php?imovel_id=$imovel_id>Voltar</a>";
+
+$dadosboleto["nosso_numero"] = $row['nosso_num'];  // Nosso numero - REGRA: Mï¿½ximo de 13 caracteres!
+$dadosboleto["numero_documento"] = $row['num_doc']; // Num do pedido ou do documento
+$data_venc = date("d/m/Y", strtotime($row['vencimento']));
 $dadosboleto["data_vencimento"] = $data_venc; // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
-$dadosboleto["data_documento"] = date("d/m/Y"); // Data de emissão do Boleto
-$dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do boleto (opcional)
-$dadosboleto["valor_boleto"] = $valor_boleto; 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
-
+$dadosboleto["data_documento"] = ""; #date("d/m/Y"); // Data de emissao do Boleto
+$dadosboleto["data_processamento"] = ""; #date("d/m/Y"); // Data de processamento do boleto (opcional)
+$valor_boleto = number_format($row['total'], 2, ',', '');
+$dadosboleto["valor_boleto"] = $valor_boleto;  // Valor do Boleto - REGRA: Com vï¿½rgula e sempre com duas casas depois da virgula
 // DADOS DO SEU CLIENTE
-$dadosboleto["sacado"] = "Nome do seu Cliente";
-$dadosboleto["endereco1"] = "Endereço do seu Cliente";
-$dadosboleto["endereco2"] = "Cidade - Estado -  CEP: 00000-000";
+$dadosboleto["sacado"] = $row['sacado'];
+$dadosboleto["endereco1"] = $row['imovel_endereco'];
+$dadosboleto["endereco2"] = "Londrina/PR";
 
 // INFORMACOES PARA O CLIENTE
-$dadosboleto["demonstrativo1"] = "Pagamento de Compra na Loja Nonononono";
-$dadosboleto["demonstrativo2"] = "Mensalidade referente a nonon nonooon nononon<br>Taxa bancária - R$ ".number_format($taxa_boleto, 2, ',', '');
-$dadosboleto["demonstrativo3"] = "BoletoPhp - http://www.boletophp.com.br";
-$dadosboleto["instrucoes1"] = "- Sr. Caixa, cobrar multa de 2% após o vencimento";
-$dadosboleto["instrucoes2"] = "- Receber até 10 dias após o vencimento";
-$dadosboleto["instrucoes3"] = "- Em caso de dúvidas entre em contato conosco: xxxx@xxxx.com.br";
-$dadosboleto["instrucoes4"] = "&nbsp; Emitido pelo sistema Projeto BoletoPhp - www.boletophp.com.br";
+
+if ($row['condominio'] == 0) {
+    if ($row['iptu'] == 0)
+        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ")";
+    else
+        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e IPTU (R$ " . $row['iptu'] . ")";
+}
+else {
+    if ($row['iptu'] == 0)
+        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e Condominio (R$ " . $row['condominio'] . ")";
+    else
+        $dadosboleto["demonstrativo1"] = "Ref: Pagamento do Aluguel (R$ " . $row['aluguel'] . ") e Condominio (R$ " . $row['condominio'] . ") e IPTU (R$ " . $row['iptu'] . ")";
+}
+$dadosboleto["demonstrativo2"] = "";
+$dadosboleto["demonstrativo3"] = "";
+
+# FreeBoleto1.Instrucoes.Add('APOS O VENCIMENTO MORA DIARIA DE R$ ' + FormatFloat('0.00', qBoleto.FieldByName('total').AsCurrency / 300) + ' E MULTA DE 2%');
+if ($row['desconto'] > 0) {
+    $dadosboleto["instrucoes1"] = "Ate o vencimento conceder desconto de R$ " . number_format($row['desconto'], 2, ',', '');
+    $dadosboleto["instrucoes2"] = "Apos o vencimento mora diaria de R$ " . number_format($row['total'] / 300, 2, ',', '') . " e multa de 2%";
+} else {
+    $dadosboleto["instrucoes1"] = "Apos o vencimento mora diaria de R$ " . number_format($row['total'] / 300, 2, ',', '') . " e multa de 2%";
+    $dadosboleto["instrucoes2"] = "";
+}
+$dadosboleto["instrucoes3"] = "";
+$dadosboleto["instrucoes4"] = "";
 
 // DADOS OPCIONAIS DE ACORDO COM O BANCO OU CLIENTE
 $dadosboleto["quantidade"] = "";
 $dadosboleto["valor_unitario"] = "";
-$dadosboleto["aceite"] = "N";		
+$dadosboleto["aceite"] = "N";
 $dadosboleto["especie"] = "R$";
 $dadosboleto["especie_doc"] = "";
 
 
-// ---------------------- DADOS FIXOS DE CONFIGURAÇÃO DO SEU BOLETO --------------- //
-
-
+// ---------------------- DADOS FIXOS DE CONFIGURACAO DO SEU BOLETO --------------- //
 // DADOS DA SUA CONTA - REAL
-$dadosboleto["agencia"] = "1234"; // Num da agencia, sem digito
-$dadosboleto["conta"] = "0012345"; 	// Num da conta, sem digito
-$dadosboleto["carteira"] = "57";  // Código da Carteira
-
+$dadosboleto["agencia"] = $row["agencia"];
+$dadosboleto["conta"] = $row["ccorrente"];
+$dadosboleto["carteira"] = $row["carteira"];
 // SEUS DADOS
-$dadosboleto["identificacao"] = "BoletoPhp - Código Aberto de Sistema de Boletos";
+$dadosboleto["identificacao"] = "";
 $dadosboleto["cpf_cnpj"] = "";
-$dadosboleto["endereco"] = "Coloque o endereço da sua empresa aqui";
-$dadosboleto["cidade_uf"] = "Cidade / Estado";
-$dadosboleto["cedente"] = "Coloque a Razão Social da sua empresa aqui";
+$dadosboleto["endereco"] = "";
+$dadosboleto["cidade_uf"] = "";
+$dadosboleto["cedente"] = $row["cedente_nome"];
 
-// NÃO ALTERAR!
-include("include/funcoes_real.php"); 
-include("include/layout_real.php");
+// NAO ALTERAR!
+include_once("include/funcoes_real.php");
+include_once("include/layout_real.php");
+mysql_close($link);
 ?>
