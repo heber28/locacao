@@ -17,10 +17,8 @@
        dateFormat: 'yy-mm-dd',
        regional: 'pt-BR'
        });
-     });
-  </script>
+     });  
 
-  <script type="text/javascript">
     function calcularTotal()
     {
         var total = parseFloat(document.forms["form"]["aluguel"].value)
@@ -34,7 +32,13 @@
         total = total - parseFloat(document.forms["form"]["desconto"].value);
         document.forms["form"]["total_com_desconto"].value = total.toFixed(2);
     }
+        
+	function toggle_element(element, speed) {
+		$(element).toggle(speed);
+	}	
+    
   </script>
+
 </head>
 
 <body onload="calcularTotal()">
@@ -83,10 +87,12 @@
              }                        
             </script>
 		</div>
+		<br />
+
+        <a href="#" onclick="toggle_element('#info_banco', 500);">Informacao Bancaria</a>
 		
-		<form action="" name="form" method="post">		
-			<fieldset>
-				<legend>Dados Bancarios</legend>
+		<form action="" name="form" method="post">
+			<fieldset id="info_banco">								
 					<label for="ccorrente">Conta Corrente</label>
 						<input type="text" id="ccorrente" name="ccorrente" value="<?= $row['ccorrente'] ?>"><br />
 					<label for="digito_cc">Digito CC</label>	
@@ -106,8 +112,9 @@
 					<label for="sacado">Sacado</label>
 						<input type="text" id="sacado" name="sacado" size=60 value="<?= $row['sacado'] ?>"><br />
 			</fieldset>
-			<fieldset>
-				<legend>Dados do Boleto</legend>
+			<br />
+			<a href="#" onclick="toggle_element('#dados_boleto', 500);">Dados do Boleto</a>
+			<fieldset id="dados_boleto">				
 					<label for="vencimento">Vencimento</label>
 						<input type="text" id="vencimento" name="vencimento" value="<?= $row['vencimento'] ?>"><br />
 					<label for="num_doc">Num Doc</label>
@@ -128,9 +135,11 @@
 						<input type="text" id="outros" name="outros" value="<?= $row['outros'] ?>" onChange='calcularTotal()'><br />
 					<label for="desconto">Desconto</label>	 
 						<input type="text" id="desconto" name="desconto" value="<?= $row['desconto'] ?>" onChange='calcularTotal()'><br />
-			</fieldset>					
-			<fieldset>
-				<legend>Pagamento</legend>
+			</fieldset>
+			<br />
+			<br />
+			<a href="#" onclick="toggle_element('#pagamento', 500);">Pagamentos</a>											
+			<fieldset id="pagamento">				
 					<label for="total">Total</label>
 						<input type="text" id="total" name="total" readonly="readonly"><br />
 					<label for="total_com_desconto">Total com Desconto</label>
