@@ -28,7 +28,7 @@
 // Os valores abaixo podem ser colocados manualmente ou ajustados p/ formulario c/ POST, GET ou de BD (MySql,Postgre,etc)  //
 // DADOS DO BOLETO PARA O SEU CLIENTE
 #include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
 if (isset($_GET['id']) == FALSE)
     exit;
 

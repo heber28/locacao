@@ -1,7 +1,7 @@
 <?
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
 
 echo "<h2>Excluindo o Im&oacute;vel</h2>";
 if (isset($_GET['id'])) {

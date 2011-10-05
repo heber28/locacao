@@ -18,7 +18,7 @@ if (isset($_POST['submitted'])) {
 	$usuario = mysql_real_escape_string(htmlentities($_POST['usuario']));
 	$senha = mysql_real_escape_string(htmlentities($_POST['senha']));
 	if ($usuario && $senha) {
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
 		$result = mysql_query("select * from usuarios where usuario='$usuario'");
 		if (mysql_num_rows($result) == 0)
 		echo('Usuario nao encontrado');

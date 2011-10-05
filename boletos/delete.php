@@ -4,7 +4,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
 if (isset($_GET['imovel_id']) and isset($_GET['id'])) {
     $id = (int) $_GET['id'];
     $imovel_id = (int) $_GET['imovel_id'];
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
     echo "<h2>Excluindo o Boleto</h2>";
     $row = mysql_fetch_array(mysql_query("SELECT * FROM `boletos` WHERE `id` = '$id' "));
     if (isset($_POST['delbutton'])) {

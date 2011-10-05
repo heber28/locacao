@@ -1,48 +1,46 @@
 <? ob_start() ?>
 <html>
-    <head>
-        <link href="style.css" rel="stylesheet" type="text/css">
-        <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
-        <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
-        <script type="text/javascript" src="js/jquery.ui.datepicker-pt-BR.js"></script>
-        <script type="text/javascript" src="scroll.js"></script>
-        <script type="text/javascript">
-            jQuery(function($) {
-                $("#vencimento").datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    regional: 'pt-BR'
-                });
-                $("#data_pagto").datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    regional: 'pt-BR'
-                });
-            });
-        </script>
+<head>
+  <link href="style.css" rel="stylesheet" type="text/css">
+  <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+  <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+  <script type="text/javascript" src="js/jquery.ui.datepicker-pt-BR.js"></script>
+  <script type="text/javascript" src="scroll.js"></script>
+  <script type="text/javascript">
+     jQuery(function($) {
+       $("#vencimento").datepicker({
+       dateFormat: 'yy-mm-dd',
+       regional: 'pt-BR'
+       });
+       $("#data_pagto").datepicker({
+       dateFormat: 'yy-mm-dd',
+       regional: 'pt-BR'
+       });
+     });
+  </script>
 
-        <script type="text/javascript">
-            function calcularTotal()
-            {
-                var total = parseFloat(document.forms["form"]["aluguel"].value)
-                    + parseFloat(document.forms["form"]["copel"].value)
-                    + parseFloat(document.forms["form"]["sanepar"].value)
-                    + parseFloat(document.forms["form"]["material"].value)
-                    + parseFloat(document.forms["form"]["iptu"].value)
-                    + parseFloat(document.forms["form"]["limpeza"].value)
-                    + parseFloat(document.forms["form"]["outros"].value);                
-                document.forms["form"]["total"].value = total.toFixed(2);
-                total = total - parseFloat(document.forms["form"]["desconto"].value);                
-                document.forms["form"]["total_com_desconto"].value = total.toFixed(2);
-            }
-        </script>
+  <script type="text/javascript">
+    function calcularTotal()
+    {
+        var total = parseFloat(document.forms["form"]["aluguel"].value)
+                  + parseFloat(document.forms["form"]["copel"].value)
+                  + parseFloat(document.forms["form"]["sanepar"].value)
+                  + parseFloat(document.forms["form"]["material"].value)
+                  + parseFloat(document.forms["form"]["iptu"].value)
+                  + parseFloat(document.forms["form"]["limpeza"].value)
+                  + parseFloat(document.forms["form"]["outros"].value);
+        document.forms["form"]["total"].value = total.toFixed(2);
+        total = total - parseFloat(document.forms["form"]["desconto"].value);
+        document.forms["form"]["total_com_desconto"].value = total.toFixed(2);
+    }
+  </script>
+</head>
 
-    </head>
-    <body onload="calcularTotal()">
-        <div id='wrapper'>
-            <div id='header'>
-                <?
+<body onload="calcularTotal()">
+			<?
                 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
-                include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+                include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
                 if ((isset($_GET['id']) == FALSE) or (isset($_GET['imovel_id']) == FALSE))
                     exit;
                 $imovel_id = (int) $_GET['imovel_id'];
@@ -52,9 +50,7 @@
                 echo "<a href='list.php?imovel_id=$imovel_id'>Voltar</a><br />";
                 echo "<h2>Editando o Boleto</h2>";
                 echo '<strong>' . $endereco . '</strong><br />';
-                ?>
-            </div>
-            <?
+                				
                 $msg = '';
                 $id = (int) $_GET['id'];
                 if (isset($_POST['submitted'])) {
@@ -73,63 +69,88 @@
                     mysql_query($sql) or die(mysql_error());
                     $msg = (mysql_affected_rows()) ? "Cadastro salvo" : "Nada foi alterado";
                 }
-                $row = mysql_fetch_array(mysql_query("SELECT * FROM `boletos` WHERE `id` = '$id'"));
+                $row = mysql_fetch_array(mysql_query("SELECT * FROM `boletos` WHERE `id` = '$id'"));                
+			    foreach ($row AS $key => $value) {
+				  $row[$key] = stripslashes($value);
+				}                                
             ?>
 
-                <div id='mensagem'>
-                    <script type='text/javascript'>
-                        var msg = "<?php echo $msg ?>";
-                        if (msg != '') {
-                            scroll(msg);
-                        }
-                    </script>
-                </div>
-
-                <form name='form' action='' method='POST'>
-                    <div id='side-a'>
-                        Conta Corrente<br />
-                        <input type='text' name='ccorrente' value='<?= stripslashes($row['ccorrente']) ?>'><br />
-                        Digito CC<br /><input type='text' name='digito_cc' value='<?= stripslashes($row['digito_cc']) ?>'><br />
-                        Banco<br /><input type='text' name='banco' value='<?= stripslashes($row['banco']) ?>'><br />
-                        Agencia<br /><input type='text' name='agencia' value='<?= stripslashes($row['agencia']) ?>'><br />
-                        Carteira<br /><input type='text' name='carteira' value='<?= stripslashes($row['carteira']) ?>'><br />
-                        Nosso Num<br /><input type='text' name='nosso_num' value='<?= stripslashes($row['nosso_num']) ?>'><br />
-                        Cedente Codigo<br /><input type='text' name='cedente_codigo' value='<?= stripslashes($row['cedente_codigo']) ?>'><br />
-                        Cedente Nome<br /><input type='text' name='cedente_nome' size=60 value='<?= stripslashes($row['cedente_nome']) ?>'><br />
-                        Sacado<br /><input type='text' name='sacado' size=60 value='<?= stripslashes($row['sacado']) ?>'><br />
-                    </div>
-                    <div id='side-b'>
-                        Vencimento<br /><input type='text' id='vencimento' name='vencimento' value='<?= stripslashes($row['vencimento']) ?>'><br />
-                        Num Doc<br /><input type='text' name='num_doc' value='<?= stripslashes($row['num_doc']) ?>'><br />
-                        Aluguel<br /><input type='text' name='aluguel' value='<?= stripslashes($row['aluguel']) ?>' onChange='calcularTotal()'><br />
-                        Copel<br /> <input type='text' name='copel' value='<?= stripslashes($row['copel']) ?>' onChange='calcularTotal()'><br />
-                        Sanepar<br /> <input type='text' name='sanepar' value='<?= stripslashes($row['sanepar']) ?>' onChange='calcularTotal()'><br />
-                    </div>
-                    <div id='side-c'>
-                        Material<br /> <input type='text' name='material' value='<?= stripslashes($row['material']) ?>' onChange='calcularTotal()'><br />
-                        Iptu<br /><input type='text' name='iptu' value='<?= stripslashes($row['iptu']) ?>' onChange='calcularTotal()'><br />
-                        Limpeza<br /><input type='text' name='limpeza' value='<?= stripslashes($row['limpeza']) ?>' onChange='calcularTotal()'><br />
-                        Outros<br /> <input type='text' name='outros' value='<?= stripslashes($row['outros']) ?>' onChange='calcularTotal()'><br />
-                        Desconto<br /><input type='text' name='desconto' value='<?= stripslashes($row['desconto']) ?>' onChange='calcularTotal()'><br />
-                    </div>
-                    <div id='side-d'>
-                        Total<br /><input type='text' name='total' readonly="readonly"><br />
-                        Total com Desconto<br /><input type='text' name='total_com_desconto' readonly="readonly"><br />
-                        Pago<br />
-                    <? if ($row['pago'] == 1) { ?>
-                        <input type="radio" name="pago" value="1" checked> Sim &nbsp;&nbsp; &nbsp;
-                        <input type="radio" name="pago" value="0"> Nao <br />
-                    <? } else { ?>
-                        <input type="radio" name="pago" value="1"> Sim &nbsp;&nbsp; &nbsp;
-                        <input type="radio" name="pago" value="0" checked> Nao <br />
-                    <? } ?>
-                    Data do pagto<br /><input type='text' id='data_pagto' name='data_pagto' value='<?= stripslashes($row['data_pagto']) ?> '><br />
-                    Total Pago<br /><input type='text' name='total_pago' value='<?= stripslashes($row['total_pago']) ?>'><br />
-                    <p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' /></p>
-                </div>
-            </form>
-        </div>
-    </body>
+		<div id='mensagem'>
+			<script type='text/javascript'>
+             var msg = "<?php echo $msg ?>";
+             if (msg != '') {
+               scroll(msg);
+             }                        
+            </script>
+		</div>
+		
+		<form action="" name="form" method="post">		
+			<fieldset>
+				<legend>Dados Bancarios</legend>
+					<label for="ccorrente">Conta Corrente</label>
+						<input type="text" id="ccorrente" name="ccorrente" value="<?= $row['ccorrente'] ?>"><br />
+					<label for="digito_cc">Digito CC</label>	
+						<input type="text" id="digito_cc" name="digito_cc" value="<?= $row['digito_cc'] ?>" maxlength="1"><br />
+					<label for="banco">Banco</label>
+						<input type="text" id="banco" name="banco" value="<?= $row['banco'] ?>"><br />
+					<label for="agencia">Agencia</label>	
+						<input type="text" id="agencia" name="agencia" value="<?= $row['agencia'] ?>"><br />
+					<label for="carteira">Carteira</label>	
+						<input type="text" id="carteira" name="carteira" value="<?= $row['carteira'] ?>"><br />
+					<label for="nosso_num">Nosso Num</label>	 
+						<input type="text" id="nosso_num" name="nosso_num" value="<?= $row['nosso_num'] ?>"><br />
+					<label for="cedente_codigo">Cedente Codigo</label>	
+						<input type="text" id="cedente_codigo" name="cedente_codigo" value="<?= $row['cedente_codigo'] ?>"><br />
+					<label for="cedente_nome">Cedente Nome</label>
+						<input type="text" id="cedente_nome" name="cedente_nome" size=60 value="<?= $row['cedente_nome'] ?>"><br />
+					<label for="sacado">Sacado</label>
+						<input type="text" id="sacado" name="sacado" size=60 value="<?= $row['sacado'] ?>"><br />
+			</fieldset>
+			<fieldset>
+				<legend>Dados do Boleto</legend>
+					<label for="vencimento">Vencimento</label>
+						<input type="text" id="vencimento" name="vencimento" value="<?= $row['vencimento'] ?>"><br />
+					<label for="num_doc">Num Doc</label>
+						<input type="text" id="num_doc" name="num_doc" value="<?= $row['num_doc'] ?>"><br />
+					<label for="aluguel">Aluguel</label>	
+						<input type="text" id="aluguel" name="aluguel" value="<?= $row['aluguel'] ?>" onChange='calcularTotal()'><br />
+					<label for="copel">Copel</label>
+						<input type="text" id="copel" name="copel" value="<?= $row['copel'] ?>" onChange='calcularTotal()'><br />
+					<label for="sanepar">Sanepar</label>
+						<input type="text" id="sanepar" name="sanepar" value="<?= $row['sanepar'] ?>" onChange='calcularTotal()'><br />
+					<label for="material">Material</label>							
+						<input type="text" id="material" name="material" value="<?= $row['material'] ?>" onChange='calcularTotal()'><br />
+					<label for="iptu">Iptu</label>	
+						<input type="text" id="iptu" name="iptu" value="<?= $row['iptu'] ?>" onChange='calcularTotal()'><br />
+					<label for="limpeza">Limpeza</label>	 
+						<input type="text" id="limpeza" name="limpeza" value="<?= $row['limpeza'] ?>" onChange='calcularTotal()'><br />
+					<label for="outros">Outros</label>
+						<input type="text" id="outros" name="outros" value="<?= $row['outros'] ?>" onChange='calcularTotal()'><br />
+					<label for="desconto">Desconto</label>	 
+						<input type="text" id="desconto" name="desconto" value="<?= $row['desconto'] ?>" onChange='calcularTotal()'><br />
+			</fieldset>					
+			<fieldset>
+				<legend>Pagamento</legend>
+					<label for="total">Total</label>
+						<input type="text" id="total" name="total" readonly="readonly"><br />
+					<label for="total_com_desconto">Total com Desconto</label>
+						<input type="text" id="total_com_desconto" name="total_com_desconto" readonly="readonly"><br />					
+					<label for="pago">Pago</label>
+						<? if ($row['pago'] == 1) { ?>
+				  			<input type="radio" name="pago" value="1" checked> Sim 
+				  			<input type="radio" name="pago" value="0"> Nao <br />
+						<? } else { ?>
+							<input type="radio" name="pago" value="1"> Sim 
+							<input type="radio" name="pago" value="0" checked> Nao <br />
+						<? } ?>
+					<label for="data_pagto">Data do pagto</label>	
+						<input type="text" id='data_pagto' name='data_pagto' value='<?= $row['data_pagto'] ?> '><br />
+					<label for="total_pago">Total pago</label>	
+						<input type="text" id="total_pago" name="total_pago" value='<?= $row['total_pago'] ?>'><br />							
+			</fieldset>
+			<p><input type='submit' value='Salvar' /><input type='hidden' value='1' name='submitted' /></p>						
+		</form>			
+</body>
 </html>
 <?
   mysql_close($link);

@@ -3,7 +3,7 @@
 $nosso_num = mysql_real_escape_string(htmlentities($_POST['nosso_num']));
 
 if (strlen($nosso_num) > 4) {
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
 	$sql = "SELECT id, nosso_num, sacado, vencimento, (aluguel + iptu + sanepar + limpeza + material + copel + outros) as total, desconto, pago, data_pagto, total_pago from boletos where nosso_num like '$nosso_num%' ";
 	$result = mysql_query($sql) or die(mysql_error());
 

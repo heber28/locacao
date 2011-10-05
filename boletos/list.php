@@ -1,7 +1,7 @@
 <?
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
 if (isset($_GET['imovel_id'])) {
 	$imovel_id = (int) $_GET['imovel_id'];
 	$result = mysql_query("SELECT endereco FROM imoveis where id = '$imovel_id'") or trigger_error(mysql_error());

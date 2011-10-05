@@ -18,7 +18,7 @@
     <body>
         <?
         include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/session.php');
-        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/config.php');
+        include_once($_SERVER['DOCUMENT_ROOT'] . '/locacao/resources/db.php');
         echo "<form action='' method='POST'>";
         if (isset($_GET['imovel_id']) == FALSE)
             exit;
